@@ -1,0 +1,43 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 300px;
+  max-width: 300px;     /* Wichtig: Einheit hinzufügen */
+  margin: 1rem 0;       /* Vertikaler Abstand, horizontal übernimmt gap */
+  min-height: 250px;
+  background-color: #fff;
+  padding: 1rem;
+}
+
+.price-group-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.group-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  margin-right: 1rem;
+  border-radius: 6px;
+}
+
+.group-title {
+  font-size: 1.8rem;
+  font-weight: bold;
+  margin: 0;
+}
+
+.article-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.article-list li {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid #eee;
+}

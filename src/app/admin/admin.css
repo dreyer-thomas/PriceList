@@ -1,0 +1,79 @@
+.price-groups {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.price-group {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  width: 300px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  background-color: #fff;
+}
+
+.items-list {
+  margin-top: 10px;
+}
+
+input[type="text"], input[type="number"] {
+  width: 100%;
+  padding: 6px 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  cursor: pointer;
+  padding: 6px 12px;
+  margin: 4px 2px;
+  border: none;
+  border-radius: 4px;
+}
+
+button.add {
+  background-color: #28a745;
+  color: white;
+}
+
+button.delete {
+  background-color: #dc3545;
+  color: white;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.item-row input[type="text"], 
+.item-row input[type="number"] {
+  /* Damit Name und Preis nebeneinander bleiben */
+  padding: 6px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* Name und Preis zusammen in einem flex container */
+.item-details {
+  display: flex;
+  gap: 10px;
+  flex: 1; /* Nimmt den verfügbaren Platz */
+}
+
+/* Löschen Button ganz rechts */
+button.delete {
+  margin-left: auto;  /* Schiebt Button an rechten Rand */
+  background-color: #3b35dc;
+  color: white;
+  border-radius: 4px;
+  padding: 4px 8px 8px 8px;
+  cursor: pointer;
+  height: 30px;
+  min-width: 30px;
+  font-weight: bold;
+}

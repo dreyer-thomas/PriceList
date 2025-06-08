@@ -1,0 +1,11 @@
+<div class="price-group-header">
+  <img [src]="image" alt="Bild der Warengruppe" class="group-image" />
+  <h2 class="group-title">{{ title }}</h2>
+</div>
+
+<ul class="article-list">
+  <li *ngFor="let article of visibleArticles">
+    <span>{{ article.name }}</span>
+    <span>{{ article.price | currency:'EUR' }}</span>
+  </li>
+</ul>
