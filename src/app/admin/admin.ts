@@ -2,7 +2,11 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+<<<<<<< HEAD
 import { AppData, Article, PriceGroup } from '../pricegroup.model';
+=======
+import { PriceGroup } from '../pricegroup.model';
+>>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 import { AdminService } from './admin.service';
 
 @Component({
@@ -12,6 +16,7 @@ import { AdminService } from './admin.service';
   imports: [CommonModule, FormsModule]
 })
 export class AdminComponent {
+<<<<<<< HEAD
   appData: AppData = new AppData();
   private readonly apiUrl = 'http://localhost:3000/api/preisgruppen';
 
@@ -20,10 +25,16 @@ export class AdminComponent {
   images: string[] = [];
   //appTitle: string = '';
 
+=======
+  priceGroups: PriceGroup[] = [];
+  private readonly apiUrl = 'http://localhost:3000/api/preisgruppen';
+
+>>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
   constructor(private service: AdminService) {
     this.load();
   }
 
+<<<<<<< HEAD
   ngOnInit() {
     this.loadImages();
   }
@@ -31,10 +42,16 @@ export class AdminComponent {
   load() {
     this.service.getPriceGroups().subscribe((data) => {
       this.appData = data;
+=======
+  load() {
+    this.service.getPriceGroups().subscribe((data) => {
+      this.priceGroups = data;
+>>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
     });
   }
 
   save() {
+<<<<<<< HEAD
     this.service.savePriceGroups(this.appData).subscribe(() => { });
   }
 
@@ -115,4 +132,36 @@ export class AdminComponent {
     this.appData.appTitle = title;
   }
   */
+=======
+    this.service.savePriceGroups(this.priceGroups).subscribe(() => {
+      alert('Gespeichert');
+    });
+  }
+
+  addArticle(groupIndex: number) {
+      const group = this.priceGroups[groupIndex];
+      if (!group.articles) {
+        group.articles = [];  // Falls nicht vorhanden, initialisieren
+      }
+      group.articles.push({ name: '', price: 0.0 , active: true});
+  }
+
+  removeArticle(groupIndex: number, articleIndex: number) {
+    this.priceGroups[groupIndex].articles.splice(articleIndex, 1);
+  }
+
+  addGroup() {
+    this.priceGroups.push({
+      title: 'Neue Gruppe',
+      image: '',
+      articles: [],
+      active: true
+    });
+  }
+
+  deleteGroup(index: number) {
+    this.priceGroups.splice(index, 1);
+  }
+
+>>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 }

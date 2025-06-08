@@ -1,0 +1,56 @@
+[
+  {
+    "title": "Eis",
+    "image": "eisbecher.png",
+    "articles": [
+      {
+        "name": "Vanille",
+        "price": "1.20"
+      },
+      {
+        "name": "Schokolade",
+        "price": "1.20"
+      },
+      {
+        "name": "Erdbeere",
+        "price": "1.20"
+      },
+      {
+        "name": "Maracuja",
+        "price": 5.4
+      }
+    ]
+  },
+  {
+    "title": "Crêpes",
+    "image": "crepes.png",
+    "articles": [
+      {
+        "name": "Zucker & Zimt",
+        "price": "2.50"
+      },
+      {
+        "name": "Nutella",
+        "price": "3.00"
+      },
+      {
+        "name": "Banane & Nutella",
+        "price": "3.50"
+      }
+    ]
+  },
+  {
+    "title": "Vegane Spezialitäten",
+    "image": "schnitzel.png",
+    "articles": [
+      {
+        "name": "Schnitzel",
+        "price": 8.9
+      },
+      {
+        "name": "Bockwurst",
+        "price": 7.8
+      }
+    ]
+  }
+]

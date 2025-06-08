@@ -16,9 +16,12 @@ export class PriceGroupComponent {
   get visibleArticles() {
      return this.articles?.filter(a => a.active !== false);
   }
+<<<<<<< HEAD
 
   getImageUrl(name: string): string {
   return `/images/${name}`;
 }
+=======
+>>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 }
 

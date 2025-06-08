@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 export class Article {
     constructor(
     public name: string = '',
@@ -21,4 +22,17 @@ export class AppData {
     public appLogo: string = '',
     public groups: PriceGroup[] = []
   ) {}
+=======
+export interface Article {
+  name: string;
+  price: number;
+  active: boolean;
+}
+
+export interface PriceGroup {
+  title: string;
+  image: string;
+  active: boolean;
+  articles: Article[];
+>>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 }
