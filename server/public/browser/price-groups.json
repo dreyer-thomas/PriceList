@@ -5,26 +5,21 @@
     "articles": [
       {
         "name": "Vanille",
-        "price": "1.20",
-        "active": true
+        "price": "1.20"
       },
       {
         "name": "Schokolade",
-        "price": "1.20",
-        "active": true
+        "price": "1.20"
       },
       {
         "name": "Erdbeere",
-        "price": "1.20",
-        "active": true
+        "price": "1.20"
       },
       {
         "name": "Maracuja",
-        "price": 5.4,
-        "active": true
+        "price": 5.4
       }
-    ],
-    "active": true
+    ]
   },
   {
     "title": "Crêpes",
@@ -32,21 +27,17 @@
     "articles": [
       {
         "name": "Zucker & Zimt",
-        "price": "2.50",
-        "active": true
+        "price": "2.50"
       },
       {
         "name": "Nutella",
-        "price": "3.00",
-        "active": true
+        "price": "3.00"
       },
       {
         "name": "Banane & Nutella",
-        "price": "3.50",
-        "active": true
+        "price": "3.50"
       }
-    ],
-    "active": true
+    ]
   },
   {
     "title": "Vegane Spezialitäten",
@@ -54,42 +45,12 @@
     "articles": [
       {
         "name": "Schnitzel",
-        "price": 8.9,
-        "active": true
+        "price": 8.9
       },
       {
         "name": "Bockwurst",
-        "price": 7.8,
-        "active": true
-      },
-      {
-        "name": "Bratwurst",
-        "price": 2.5,
-        "active": true
+        "price": 7.8
       }
-    ],
-    "active": true
-  },
-  {
-    "title": "Salate",
-    "image": "bockwurst.png",
-    "articles": [
-      {
-        "name": "Bratwurstsalat",
-        "price": 9.5,
-        "active": true
-      },
-      {
-        "name": "Fleischsalat",
-        "price": 6.95,
-        "active": true
-      },
-      {
-        "name": "Blattsalat",
-        "price": 1.5,
-        "active": true
-      }
-    ],
-    "active": true
+    ]
   }
 ]
