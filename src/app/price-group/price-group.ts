@@ -16,5 +16,9 @@ export class PriceGroupComponent {
   get visibleArticles() {
      return this.articles?.filter(a => a.active !== false);
   }
+
+  getImageUrl(name: string): string {
+  return `/images/${name}`;
+}
 }
 

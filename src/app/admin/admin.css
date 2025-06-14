@@ -77,3 +77,68 @@ button.delete {
   min-width: 30px;
   font-weight: bold;
 }
+
+.image-upload {
+  margin-top: 1rem;
+}
+
+.preview-image {
+  max-width: 200px;
+  margin-top: 10px;
+  border: 1px solid #ccc;
+}
+
+.image-list {
+  margin-top: 2rem;
+}
+.image-entry {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.preview-image {
+  width: 100px;
+  height: auto;
+  border: 1px solid #ccc;
+}
+
+.app-settings-card {
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+  background-color: #f9f9f9;
+  max-width: 600px;
+}
+
+.app-settings-card h2 {
+  margin-bottom: 1rem;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.form-row label {
+  margin-bottom: 0.3rem;
+}
+
+.form-row input {
+  padding: 0.5rem;
+  font-size: 1rem;
+  border-radius: 5px;
+  border: 1px solid #aaa;
+}
+
+.logo-preview {
+  margin-top: 1rem;
+}
+
+.logo-preview img {
+  max-height: 100px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}

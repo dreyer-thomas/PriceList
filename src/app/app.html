@@ -1,9 +1,12 @@
 
 
-  <app-header></app-header>
+  <app-header
+    [title] = "appData.appTitle"
+    [logo] = "appData.appLogo" >
+  </app-header>
 
   <div class="price-groups-container">
-      @for (group of priceGroups; track group.title) {
+      @for (group of appData.groups; track group.title) {
         <app-price-group
           [title]="group.title"
           [image]="group.image"
@@ -12,5 +15,7 @@
       }
   </div>
 
-  <app-footer></app-footer>
+  <app-footer
+    [title] = "appData.appTitle">
+  </app-footer>
 

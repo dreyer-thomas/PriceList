@@ -1,6 +1,8 @@
 <header class="header">
   <div class="logo-container">
-    <img src="waffle-ice-cream.png" alt="Logo" class="logo" />
+    <img [src]="getImageUrl(logo)" alt="Logo" class="logo" />
   </div>
-  <h1 class="title">Meyers Eis</h1>
+  <div class="header-content">
+    <h1 class="title">{{title}}</h1>
+  </div>
 </header>

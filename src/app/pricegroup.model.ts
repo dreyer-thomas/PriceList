@@ -10,3 +10,9 @@ export interface PriceGroup {
   active: boolean;
   articles: Article[];
 }
+
+export interface AppData {
+  appTitle: string;
+  appLogo: string;
+  groups: PriceGroup[];
+}

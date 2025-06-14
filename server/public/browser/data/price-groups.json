@@ -1,0 +1,35 @@
+{
+  "appTitle": "Dreyer's Eis",
+  "appLogo": "Eislogo.svg",
+  "groups": [
+    {
+      "title": "Eis",
+      "image": "Kugeleis.png",
+      "articles": [
+        {
+          "name": "Schoko",
+          "price": 2.5,
+          "active": true
+        },
+        {
+          "name": "Vanille",
+          "price": 1.8,
+          "active": true
+        }
+      ],
+      "active": true
+    },
+    {
+      "title": "Crêpes",
+      "image": "crepes.png",
+      "articles": [
+        {
+          "name": "Nutella",
+          "price": 4,
+          "active": true
+        }
+      ],
+      "active": true
+    }
+  ]
+}

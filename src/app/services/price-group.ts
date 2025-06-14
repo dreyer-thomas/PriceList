@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { PriceGroup } from '../pricegroup.model'
+import { AppData } from '../pricegroup.model'
 
 
 @Injectable({
@@ -12,7 +12,7 @@ export class PriceGroupService {
 
   constructor(private http: HttpClient) {}
 
-  getPriceGroups(): Observable<PriceGroup[]> {
-    return this.http.get<PriceGroup[]>(this.apiUrl);
+  getPriceGroups(): Observable<AppData> {
+    return this.http.get<AppData>(this.apiUrl);
   }
 }

@@ -1,27 +1,62 @@
 
-
-<div *ngFor="let group of priceGroups; let i = index" class="price-group-editor">
-  <input [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
-  <input [(ngModel)]="group.image" placeholder="Bilddatei" />
-  <label>
-      <input type="checkbox" [(ngModel)]="group.active" />Aktiv
-  </label>
-
-  <button (click)="deleteGroup(i)">Gruppe löschen</button>
-
-  <!-- Artikel bearbeiten -->
-  <div *ngFor="let item of group.articles; let j = index">
-    <div class="item-details">
-        <input [(ngModel)]="item.name" placeholder="Artikelname" />
-        <input type="number" [(ngModel)]="item.price" placeholder="Preis" />
-         <label>
-            <input type="checkbox" [(ngModel)]="item.active" />Aktiv
-        </label>
-        <button class="delete" (click)="removeArticle(i, j)">X</button>
-    </div>  
+<div class="app-settings-card">
+  <h3>Allgemeine Einstellungen</h3>
+  <div class="form-row">
+    <label for="appTitle">Titel der Seite:</label>
+    <input id="appTitle" [(ngModel)]="appData.appTitle" />
+  </div>
+  <div class="form-row">
+    <label for="appLogo">Logo-Dateiname:</label>
+    <input id="appLogo" [(ngModel)]="appData.appLogo" />
+  </div>
+  <div class="logo-preview" *ngIf="appData.appLogo">
+    <p>Logo-Vorschau:</p>
+    <img [src]="'/images/' + appData.appLogo" alt="Logo" />
+  </div>
 </div>
 
-  <button (click)="addArticle(i)">Neuen Artikel hinzufügen</button>
+<div class="app-settings-card">
+  <h3>Artikelverwaltung</h3>
+  <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
+    <input [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
+    <input [(ngModel)]="group.image" placeholder="Bilddatei" />
+    <label>
+        <input type="checkbox" [(ngModel)]="group.active" />Aktiv
+    </label>
+
+    <button (click)="deleteGroup(i)">Gruppe löschen</button>
+
+    <div *ngFor="let item of group.articles; let j = index">
+      <div class="item-details">
+          <input [(ngModel)]="item.name" placeholder="Artikelname" />
+          <input type="number" [(ngModel)]="item.price" placeholder="Preis" />
+          <label>
+              <input type="checkbox" [(ngModel)]="item.active" />Aktiv
+          </label>
+          <button class="delete" (click)="removeArticle(i, j)">X</button>
+      </div>  
+    </div>
+      <button (click)="addArticle(i)">Neuen Artikel hinzufügen</button>
+    </div>
+    <button (click)="addGroup()">Neue Preisgruppe hinzufügen</button>
 </div>
-<button (click)="addGroup()">Neue Preisgruppe hinzufügen</button>
-<button (click)="save()">Speichern</button>
+
+<div class="app-settings-card">
+  <h3>Hochgeladene Bilder</h3>
+  <div class="image-list" *ngIf="images.length">
+    <div *ngFor="let img of images" class="image-entry">
+      <img [src]="'/images/' + img" [alt]="img" class="preview-image" />
+      <span>{{ img }}</span>
+      <button (click)="deleteImage(img)">Löschen</button>
+    </div>
+  </div>
+  <div class="image-upload">
+    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+    <button (click)="onUpload()">Bild hochladen</button>
+  </div>
+</div>
+
+<div class="app-settings-card">
+  <h3>Konfiguration speichern</h3>
+  <button (click)="save()">Speichern</button>
+</div>

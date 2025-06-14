@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { PriceGroup } from '../pricegroup.model';
+import { AppData } from '../pricegroup.model';
 import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -9,11 +9,11 @@ export class AdminService {
 
   constructor(private http: HttpClient) {}
 
-  getPriceGroups(): Observable<PriceGroup[]> {
-    return this.http.get<PriceGroup[]>(this.apiUrl);
+  getPriceGroups(): Observable<AppData> {
+    return this.http.get<AppData>(this.apiUrl);
   }
 
-  savePriceGroups(data: PriceGroup[]): Observable<any> {
+  savePriceGroups(data: AppData): Observable<any> {
     return this.http.post(this.apiUrl, data);
   }
 }

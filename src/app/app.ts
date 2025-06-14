@@ -4,7 +4,7 @@ import { FooterComponent } from './footer/footer';
 import { PriceGroupComponent } from './price-group/price-group';
 import { PriceGroupService } from './services/price-group';
 import { interval, switchMap } from 'rxjs';
-import { PriceGroup } from './pricegroup.model'
+import { AppData } from './pricegroup.model'
 
 @Component({
   selector: 'app-root',
@@ -15,9 +15,15 @@ import { PriceGroup } from './pricegroup.model'
 })
 
 export class App implements OnInit {
-  priceGroups: PriceGroup[] = [];
+  //priceGroups: PriceGroup[] = [];
+  appData: AppData = {
+      appTitle: '', 
+      appLogo: '',
+      groups: [] 
+    }
 
-   constructor(private service: PriceGroupService) {}
+
+  constructor(private service: PriceGroupService) {}
 
   ngOnInit(): void {
     this.loadInitialData();
@@ -26,13 +32,17 @@ export class App implements OnInit {
     interval(10000).pipe(
       switchMap(() => this.service.getPriceGroups())
     ).subscribe((data) => {
-      this.priceGroups = data.filter(group => group.active !== false);
+      this.appData.appTitle = data.appTitle;
+      this.appData.appLogo = data.appLogo;
+      this.appData.groups = data.groups.filter(group => group.active !== false);
     });
   }
 
   private loadInitialData() {
     this.service.getPriceGroups().subscribe((data) => {
-      this.priceGroups = data.filter(group => group.active !== false);
+      this.appData.appTitle = data.appTitle;
+      this.appData.appLogo = data.appLogo;
+      this.appData.groups = data.groups.filter(group => group.active !== false);
     });
   }
 
