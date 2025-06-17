@@ -17,10 +17,7 @@
   margin-top: 10px;
 }
 
-<<<<<<< HEAD
 /*
-=======
->>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 input[type="text"], input[type="number"] {
   width: 100%;
   padding: 6px 8px;
@@ -29,10 +26,7 @@ input[type="text"], input[type="number"] {
   border-radius: 4px;
   box-sizing: border-box;
 }
-<<<<<<< HEAD
 */
-=======
->>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 
 button {
   cursor: pointer;
@@ -75,7 +69,6 @@ button.delete {
 
 /* Löschen Button ganz rechts */
 button.delete {
-<<<<<<< HEAD
  background-color: #f44336; /* Knallrot für Aufmerksamkeit */
   color: white;
   border: none;
@@ -198,15 +191,4 @@ input[type="number"] {
 
 .article-form button.delete:hover {
   background-color: #d32f2f;
-=======
-  margin-left: auto;  /* Schiebt Button an rechten Rand */
-  background-color: #3b35dc;
-  color: white;
-  border-radius: 4px;
-  padding: 4px 8px 8px 8px;
-  cursor: pointer;
-  height: 30px;
-  min-width: 30px;
-  font-weight: bold;
->>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 }

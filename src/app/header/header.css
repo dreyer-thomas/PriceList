@@ -1,25 +1,14 @@
 .header {
-<<<<<<< HEAD
   position: relative;
   height: 200px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: visible;
-=======
-  display: flex;
-  align-items: center;
-  justify-content: center; /* zentriert den Titel im Gesamtbereich */
-  position: relative;
-  padding: 1rem 0;
-  background-color: #f8f8f8;
-  border-bottom: 1px solid #ddd;
->>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 }
 
 .logo-container {
   position: absolute;
-<<<<<<< HEAD
   left: 0px;
   top: 20px;
   width: 120px;
@@ -42,21 +31,4 @@
   font-size: 2rem;
   font-weight: bold;
   z-index: 5;
-=======
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-.logo {
-  width: 60px;
-  height: auto;
-}
-
-.title {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0;
-  text-align: center;
->>>>>>> 1ac4b0f (Initial Commit: Angular Fromtend and Express Backend)
 }
