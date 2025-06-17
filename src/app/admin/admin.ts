@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AppData } from '../pricegroup.model';
+import { AppData, Article, PriceGroup } from '../pricegroup.model';
 import { AdminService } from './admin.service';
 
 @Component({
@@ -12,17 +12,13 @@ import { AdminService } from './admin.service';
   imports: [CommonModule, FormsModule]
 })
 export class AdminComponent {
-  appData: AppData = {
-      appTitle: '', 
-      appLogo: '',
-      groups: []
-  };
+  appData: AppData = new AppData();
   private readonly apiUrl = 'http://localhost:3000/api/preisgruppen';
 
   selectedFile?: File;
   previewUrl?: string;
   images: string[] = [];
-  appTitle: string = '';
+  //appTitle: string = '';
 
   constructor(private service: AdminService) {
     this.load();
@@ -47,7 +43,7 @@ export class AdminComponent {
       if (!group.articles) {
         group.articles = [];  // Falls nicht vorhanden, initialisieren
       }
-      group.articles.push({ name: '', price: 0.0 , active: true});
+      group.articles.push(new Article());
   }
 
   removeArticle(groupIndex: number, articleIndex: number) {
@@ -55,12 +51,7 @@ export class AdminComponent {
   }
 
   addGroup() {
-    this.appData.groups.push({
-      title: 'Neue Gruppe',
-      image: '',
-      articles: [],
-      active: true
-    });
+    this.appData.groups.push(new PriceGroup());
   }
 
   deleteGroup(index: number) {
@@ -119,8 +110,9 @@ export class AdminComponent {
   }
 
 
+  /*
   saveAppTitle(title: string) {
     this.appData.appTitle = title;
   }
-
+  */
 }

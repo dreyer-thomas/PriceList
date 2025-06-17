@@ -3,11 +3,11 @@
   <h3>Allgemeine Einstellungen</h3>
   <div class="form-row">
     <label for="appTitle">Titel der Seite:</label>
-    <input id="appTitle" [(ngModel)]="appData.appTitle" />
+    <input type="text" id="appTitle" [(ngModel)]="appData.appTitle" />
   </div>
   <div class="form-row">
     <label for="appLogo">Logo-Dateiname:</label>
-    <input id="appLogo" [(ngModel)]="appData.appLogo" />
+    <input type="text" id="appLogo" [(ngModel)]="appData.appLogo" />
   </div>
   <div class="logo-preview" *ngIf="appData.appLogo">
     <p>Logo-Vorschau:</p>
@@ -18,28 +18,30 @@
 <div class="app-settings-card">
   <h3>Artikelverwaltung</h3>
   <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
-    <input [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
-    <input [(ngModel)]="group.image" placeholder="Bilddatei" />
+    <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
+    <input type="text" [(ngModel)]="group.image" placeholder="Bilddatei" />
     <label>
         <input type="checkbox" [(ngModel)]="group.active" />Aktiv
     </label>
 
     <button (click)="deleteGroup(i)">Gruppe löschen</button>
 
-    <div *ngFor="let item of group.articles; let j = index">
-      <div class="item-details">
-          <input [(ngModel)]="item.name" placeholder="Artikelname" />
-          <input type="number" [(ngModel)]="item.price" placeholder="Preis" />
-          <label>
-              <input type="checkbox" [(ngModel)]="item.active" />Aktiv
-          </label>
-          <button class="delete" (click)="removeArticle(i, j)">X</button>
-      </div>  
+    <div *ngFor="let article of group.articles; let j = index">
+      <form class="article-form">
+        <input type="text" [(ngModel)]="article.name" [name]="'name-' + i + '-' + j" placeholder="Artikelname" />
+        <input type="number" [(ngModel)]="article.price" [name]="'price-' + i + '-' + j" placeholder="Preis" />
+
+        <label>
+          <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" aria-label="Artikel aktivieren/deaktivieren" />
+        </label>
+
+        <button class="delete" (click)="removeArticle(i, j)"><i class="fa fa-trash">Löschen</i></button>
+     </form>
     </div>
-      <button (click)="addArticle(i)">Neuen Artikel hinzufügen</button>
+      <button (click)="addArticle(i)">Neuer Artikel</button>
     </div>
-    <button (click)="addGroup()">Neue Preisgruppe hinzufügen</button>
-</div>
+    <button (click)="addGroup()">Neue Preisgruppe</button>
+  </div>
 
 <div class="app-settings-card">
   <h3>Hochgeladene Bilder</h3>
