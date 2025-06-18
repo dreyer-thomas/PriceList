@@ -8,7 +8,7 @@ import { AppData } from '../pricegroup.model'
   providedIn: 'root'
 })
 export class PriceGroupService {
-  private readonly apiUrl = 'http://localhost:3000/api/preisgruppen';
+  private readonly apiUrl =  '/api/preisgruppen';
 
   constructor(private http: HttpClient) {}
 

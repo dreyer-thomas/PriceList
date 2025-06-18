@@ -13,7 +13,7 @@ import { AdminService } from './admin.service';
 })
 export class AdminComponent {
   appData: AppData = new AppData();
-  private readonly apiUrl = 'http://localhost:3000/api/preisgruppen';
+  private readonly apiUrl = '/api/preisgruppen';
 
   selectedFile?: File;
   previewUrl?: string;
