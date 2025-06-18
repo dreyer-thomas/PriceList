@@ -18,7 +18,6 @@ export class AdminComponent {
   selectedFile?: File;
   previewUrl?: string;
   images: string[] = [];
-  //appTitle: string = '';
 
   constructor(private service: AdminService) {
     this.load();
@@ -109,10 +108,4 @@ export class AdminComponent {
     });
   }
 
-
-  /*
-  saveAppTitle(title: string) {
-    this.appData.appTitle = title;
-  }
-  */
 }
