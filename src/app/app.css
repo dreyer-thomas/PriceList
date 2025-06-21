@@ -10,6 +10,8 @@
   flex: 1;
   background-color: #f8f8dc; /* Beige-Ton vom Eisauto */
   overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
 }
 
 .price-groups-container {
