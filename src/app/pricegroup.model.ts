@@ -19,6 +19,8 @@ export class AppData {
   constructor(
     public appTitle: string = '',
     public appLogo: string = '',
-    public groups: PriceGroup[] = []
+    public groups: PriceGroup[] = [],
+    public zoom: number = 0.8,
+    public impressum: string = '',
   ) {}
 }

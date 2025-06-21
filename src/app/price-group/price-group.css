@@ -5,7 +5,7 @@
   max-width: 300px;     /* Wichtig: Einheit hinzufügen */
   margin: 1rem 0;       /* Vertikaler Abstand, horizontal übernimmt gap */
   min-height: 250px;
-  background-color: #fff;
+  background-color: transparent;
   padding: 1rem;
 }
 

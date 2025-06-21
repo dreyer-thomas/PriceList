@@ -15,4 +15,5 @@ export class HeaderComponent {
   getImageUrl(name: string): string {
     return `/images/${name}`;
   }
+
 }

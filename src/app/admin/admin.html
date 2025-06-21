@@ -9,6 +9,14 @@
     <label for="appLogo">Logo-Dateiname:</label>
     <input type="text" id="appLogo" [(ngModel)]="appData.appLogo" />
   </div>
+  <div class="form-row">
+    <label for="zoom">Zoom:</label>
+    <input type="number" id="appZoom" [(ngModel)]="appData.zoom" />
+  </div>
+  <div class="form-row">
+    <label for="Impressum">Impressum:</label>
+    <input type="text" id="appImpressum" [(ngModel)]="appData.impressum" />
+  </div>
   <div class="logo-preview" *ngIf="appData.appLogo">
     <p>Logo-Vorschau:</p>
     <img [src]="'/images/' + appData.appLogo" alt="Logo" />

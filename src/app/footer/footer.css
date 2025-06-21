@@ -1,19 +1,27 @@
 .footer {
-  text-align: center;
-  padding: 1rem;
-  background-color: #f0f0f0;
-  font-size: 0.9rem;
-  color: #555;
-  border-top: 1px solid #ddd;
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-  left: 0;
-  line-height: 0.3; /* <- Zeilenabstand reduziert */
+  background-color: #a52a2a;
+  color: white;
+  padding: 3rem 1rem 1rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  font-size: 1rem;
 }
 
 .firma {
   font-weight: bold;
-  font-size: 1.1rem; /* etwas größer */
-  margin-bottom: 0.3rem;
+  margin: 0;
+}
+
+.impressum,
+.footer-separator {
+  margin: 0;
 }

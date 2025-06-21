@@ -9,4 +9,5 @@ import { Component, Input } from '@angular/core';
 })
 export class FooterComponent {
   @Input() title: string = 'Default';
+  @Input() impressum: string = '';
 }
