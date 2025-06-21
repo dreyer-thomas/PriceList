@@ -13,19 +13,18 @@
 }
 
 .price-groups-container {
-  flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 3rem;
-  padding: 2rem;
-  background-color: #f8f8dc;
-  overflow: hidden;
+  justify-content: center;
 }
 
 .main-content {
-  flex: 1;
+  flex-grow: 1;
+  overflow: hidden;        /* verhindert Scrollen */
   display: flex;
   justify-content: center;
+  align-items: flex-start;
+  background-color: #f8f8dc;
   padding: 2rem;
 }
