@@ -1,6 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
+  min-height: 100vh;
 }
 
 .app-wrapper {
@@ -9,8 +10,6 @@
   flex: 1;
   background-color: #f8f8dc; /* Beige-Ton vom Eisauto */
   overflow-x: hidden;
-  overflow-y: auto;
-  min-height: 100vh;
 }
 
 .price-groups-container {
@@ -19,9 +18,12 @@
   justify-content: center;   /* zentriert die Gruppen */
   gap: 5rem;                 /* Abstand zwischen den Gruppen */
   padding: 2rem;             /* Abstand zum Rand */
-  /*flex: 1;*/                   /* füllt vertikal den Raum zwischen Header und Footer */
+  max-width: 1200px;         /* optional */
 }
 
-.spacer {
-  flex-grow: 1;  /* schiebt footer nach unten */
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
 }

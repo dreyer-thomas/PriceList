@@ -4,17 +4,18 @@
     [logo] = "appData.appLogo">
   </app-header>
 
-  <div class="price-groups-container">
-      @for (group of appData.groups; track group.title) {
-        <app-price-group
-          [title]="group.title"
-          [image]="group.image"
-          [articles]="group.articles">
-        </app-price-group>
-      }
-  </div>
+  <main class="main-content">
+    <div class="price-groups-container">
+        @for (group of appData.groups; track group.title) {
+          <app-price-group
+            [title]="group.title"
+            [image]="group.image"
+            [articles]="group.articles">
+          </app-price-group>
+        }
+    </div>
+  </main>
 
-  <div class="spacer"></div>
   <app-footer
     [title] = "appData.appTitle"
     [impressum] ="appData.impressum">
