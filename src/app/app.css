@@ -1,7 +1,6 @@
 :host {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 .app-wrapper {
@@ -12,6 +11,7 @@
   overflow-x: hidden;
   overflow-y: auto;
   min-height: 100vh;
+  max-height: 100vh;
 }
 
 .price-groups-container {
