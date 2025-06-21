@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  flex: 0 1 300px;
+  /*flex: 0 1 300px;*/
   max-width: 300px;     /* Wichtig: Einheit hinzufügen */
   margin: 1rem 0;       /* Vertikaler Abstand, horizontal übernimmt gap */
   min-height: auto;

@@ -21,3 +21,7 @@
   padding: 2rem;             /* Abstand zum Rand */
   flex: 1;                   /* füllt vertikal den Raum zwischen Header und Footer */
 }
+
+.spacer {
+  flex-grow: 1;  /* schiebt footer nach unten */
+}
