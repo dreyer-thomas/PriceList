@@ -7,18 +7,20 @@
 .app-wrapper {
   display: flex;
   flex-direction: column;
-  flex: 1;
+  min-height: 0;
+  height: 100%;
   background-color: #f8f8dc; /* Beige-Ton vom Eisauto */
-  overflow-x: hidden;
 }
 
 .price-groups-container {
+  flex-grow: 1;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;   /* zentriert die Gruppen */
-  gap: 5rem;                 /* Abstand zwischen den Gruppen */
-  padding: 2rem;             /* Abstand zum Rand */
-  max-width: 1200px;         /* optional */
+  justify-content: center;
+  gap: 3rem;
+  padding: 2rem;
+  background-color: #f8f8dc;
+  overflow: hidden;
 }
 
 .main-content {

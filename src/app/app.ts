@@ -41,7 +41,7 @@ export class App implements OnInit {
             this.appData.groups = data.groups.filter(group => group.active !== false);
             this.appData.zoom = data.zoom;
             this.appData.impressum = data.impressum;
-            setTimeout(() => this.setZoom(), 0);
+            setTimeout(() => this.setZoom(), 100);
           });
       }
 
@@ -52,7 +52,7 @@ export class App implements OnInit {
           this.appData.groups = data.groups.filter(group => group.active !== false);
           this.appData.zoom = data.zoom;
           this.appData.impressum = data.impressum;
-          setTimeout(() => this.setZoom(), 0);
+          setTimeout(() => this.setZoom(), 100);
         });
       }
 
