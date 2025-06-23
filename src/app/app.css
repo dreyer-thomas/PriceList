@@ -23,7 +23,7 @@
 
   flex: unset;
   height: auto;
-  max-width: 1200px;
+  max-width: 1000px;
   width: 100%;
   min-height: 0;       /* 👈 notwendig in Flex-Umgebungen, um Overflow zu vermeiden */
 }
