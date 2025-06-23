@@ -8,9 +8,9 @@
 .main-content {
   flex: 1;
   display: flex;
-  justify-content: center;
-  align-items: flex-start; /* Kein vertikales Zentrieren mehr */
-  padding: 2rem 1rem;
+  justify-content: center;   /* horizontal zentriert */
+  align-items: center;       /* vertikal zentriert */
+  padding: 2rem;
 }
 
 .content-grid {
@@ -18,13 +18,12 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
+  max-width: 1000px;
   width: 100%;
-  padding: 1rem;
-  box-sizing: border-box;
 }
 
 .grid-item {
-  flex: 1 1 calc(50% - 2rem);   /* zwei nebeneinander, mit Abstand */
+  flex: 1 1 calc(50% - 2rem);
   max-width: 500px;
   min-width: 280px;
   box-sizing: border-box;
