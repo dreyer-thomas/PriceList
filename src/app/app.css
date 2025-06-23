@@ -18,14 +18,14 @@
   flex-wrap: wrap;
   justify-content: center;
   gap: 2rem;
-  max-width: 1000px;
   width: 100%;
+  padding: 1rem;
   box-sizing: border-box;
 }
 
 .grid-item {
-  flex: 1 1 300px;
-  max-width: 400px;
+  flex: 1 1 100%;
+  max-width: min(90vw, 500px);  /* 👉 höchstens 500px, aber max. 90% der Viewport-Breite */
   box-sizing: border-box;
 }
 

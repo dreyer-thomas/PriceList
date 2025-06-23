@@ -2,6 +2,7 @@
   display: block;
   flex-direction: column;
   width: 100%;
+  height: 100%;
   background-color: #f8f7dc;
   padding: 2rem; /* mehr Innenabstand */
   box-sizing: border-box;
