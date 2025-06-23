@@ -19,9 +19,11 @@
 .firma {
   font-weight: bold;
   margin: 0;
+  color: #f8f7dc;
 }
 
 .impressum,
 .footer-separator {
   margin: 0;
+  color: #f8f7dc;
 }

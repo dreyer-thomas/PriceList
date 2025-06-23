@@ -44,10 +44,11 @@
   font-size: 2.5rem;
   font-weight: bold;
   margin: 0;
+  color: #f8f7dc;
 }
 
 .header-wave-bg {
-  height: 100px;
+  height: 50px;
   overflow: hidden;
   background-color: #f5f5dc; /* Beige unter der Welle */
 }

@@ -1,24 +1,23 @@
-<div class="app-wrapper">
-  <app-header
-    [title] = "appData.appTitle"
-    [logo] = "appData.appLogo">
-  </app-header>
+<app-header 
+    [title]="appData.appTitle" 
+    [logo]="appData.appLogo">
+</app-header>
 
-  <main class="main-content">
-    <div class="price-groups-container">
-        @for (group of appData.groups; track group.title) {
-          <app-price-group
-            [title]="group.title"
-            [image]="group.image"
-            [articles]="group.articles">
-          </app-price-group>
-        }
-    </div>
-  </main>
+<main class="main-content">
+  <div class="content-grid">
+    @for (group of appData.groups; track group.title) {
+      <div class="grid-item">
+        <app-price-group
+          [title]="group.title"
+          [image]="group.image"
+          [articles]="group.articles">
+        </app-price-group>
+      </div>
+    }
+  </div>
+</main>
 
-  <app-footer
-    [title] = "appData.appTitle"
-    [impressum] ="appData.impressum">
-  </app-footer>
-</div>
-
+<app-footer 
+    [title]="appData.appTitle" 
+    [impressum]="appData.impressum">
+</app-footer>

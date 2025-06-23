@@ -28,7 +28,7 @@ export class App implements OnInit {
         this.zoom = this.appData.zoom;
       
         // Alle 5 Sekunden neu laden
-        interval(10000).pipe(
+        interval(2000).pipe(
         switchMap(() => this.service.getPriceGroups()),
         retry(),
         catchError(error => {
