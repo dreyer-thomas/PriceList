@@ -24,8 +24,9 @@
 }
 
 .grid-item {
-  flex: 1 1 100%;
-  max-width: min(90vw, 500px);  /* 👉 höchstens 500px, aber max. 90% der Viewport-Breite */
+  flex: 1 1 calc(50% - 2rem);   /* zwei nebeneinander, mit Abstand */
+  max-width: 500px;
+  min-width: 280px;
   box-sizing: border-box;
 }
 
