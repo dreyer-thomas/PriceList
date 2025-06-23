@@ -1,32 +1,32 @@
 :host {
   display: block;
   flex-direction: column;
-  height: auto;
   width: 100%;
   background-color: #f8f7dc;
-  padding: 1rem;
+  padding: 2rem; /* mehr Innenabstand */
   box-sizing: border-box;
-  border-radius: 0.5rem;
-  max-width: 400px;
-  margin: 0 auto;
+  border-radius: 1rem;
+  max-width: 600px; /* vorher 400px */
+  margin: 2rem auto; /* mittig mit etwas Abstand */
+  font-size: 1.5rem; /* Grundschriftgröße erhöht */
 }
 
 .price-group-header {
   display: flex;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 2.5rem;
 }
 
 .group-image {
-  width: 100px;
-  height: 70px;
+  width: 200px; /* vorher 150px */
+  height: 150px; /* vorher 110px */
   object-fit: cover;
-  margin-right: 1rem;
-  border-radius: 8px;
+  margin-right: 1.5rem;
+  border-radius: 1rem;
 }
 
 .group-title {
-  font-size: 1.8rem;
+  font-size: 2.5rem; /* vorher 1.8rem */
   font-weight: bold;
   margin: 0;
 }
@@ -34,21 +34,21 @@
 .article-list {
   list-style: none;
   padding: 0;
-  margin: 10px;
-  display: block;
+  margin: 1.5rem 0;
+  display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* oder space-between, je nach Zielbild */
+  gap: 1rem;
 }
 
 .article-list li {
   display: flex;
   justify-content: space-between;
-  font-size: 1.2rem;
-  padding: 1rem;
-  border-bottom: 1px solid #eee;
+  font-size: 1.8rem; /* vorher 1.2rem */
+  padding: 1.5rem;
+  border-bottom: 1px solid #ddd;
 }
 
 .article-list li span {
-  font-size: 1rem;
+  font-size: 1.6rem;
   font-weight: normal;
 }
