@@ -2,50 +2,34 @@
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
-  background-color: #f8f7dc; /* beige Hintergrund */
+  background-color: #f8f7dc;
 }
 
-/* Hauptbereich soll dehnbar sein */
 .main-content {
   flex: 1;
   display: flex;
-  justify-content: center;    /* horizontal zentriert */
-  align-items: center;        /* 👉 vertikal zentriert */
-  padding: 1rem;
+  justify-content: center;
+  align-items: flex-start; /* Kein vertikales Zentrieren mehr */
+  padding: 2rem 1rem;
 }
 
-/* Responsive Grid mit max-Breite wie container */
 .content-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  grid-auto-rows: unset;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2rem;
-
-  flex: unset;
-  height: auto;
   max-width: 1000px;
   width: 100%;
-  min-height: 0;       /* 👈 notwendig in Flex-Umgebungen, um Overflow zu vermeiden */
+  box-sizing: border-box;
 }
 
-
-/* Jede Karte wächst in alle Richtungen */
 .grid-item {
-  flex: 0 1 300px;
-  margin: 3rem; /* 👉 Abstand rundherum */
-  flex-direction: column;
-  display: flex;
-  margin: 1rem;
+  flex: 1 1 300px;
+  max-width: 400px;
+  box-sizing: border-box;
 }
 
-/* PriceGroup skaliert automatisch */
-.app-price-group {
-  flex: 1;
-  width: 100%;
-  height: 100%;
-  display: block; /* notwendig, wenn kein Shadow DOM im Weg ist */
-}
-
+/* Optional: Footer clean halten */
 .app-footer {
   border: none;
   box-shadow: none;
