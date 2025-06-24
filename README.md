@@ -1,6 +1,11 @@
 # ShopBoard
 
-Dieses Projekt realisiert eine Anzeige in einem Verkaufswagen oder Imbis zur Anzeige der Preise. Es besteht aus einer Web-Visualisierung für einen Monitor, auf dem die Preise und Artikel angezeigt werden. Über die eingebaute WLAN-Hotspot-Funktion kann sich der Administrator auf das Gerät verbinden und über die Admin-Seite die Artikel, Preise usw. einstellen. 
+Dieses Projekt realisiert eine Anzeige in einem Verkaufswagen oder Imbiss zur Anzeige der Preise. Es besteht aus einer Web-Visualisierung für einen Monitor, auf dem die Preise und Artikel angezeigt werden. Über die eingebaute WLAN-Hotspot-Funktion kann sich der Administrator auf das Gerät verbinden und über die Admin-Seite die Artikel, Preise usw. einstellen. 
+
+Das Projekt besteht aus drei zentralen Komponenten:
+- einer Angular-Frontend-Anwendung zur Anzeige der Preise auf einem Bildschirm,
+- einer Node.js-Backend-Anwendung zur Konfiguration und Bereitstellung der Webinhalte,
+- einer automatisierten Konfiguration und Steuerung über ein Raspberry Pi System (inkl. WLAN-Hotspot, Autoupdate, Kiosk-Modus und Bildschirmmanagement).
 
 ## Aufruf des Servers
 
@@ -12,15 +17,29 @@ npm run prod
 
 Der Server hat eine eingebaute REST-API womit die Konfiguration von der WebUI entgegengenommen und auf dem Server persistiert wird. Die Dateien werden dabei in diese Pfade abgelegt:
 
-./server/public/browser/data : Ablage der Konfigurationsdatei price-groups.json
-./server/public/browser/images: Ablage der hochgeladenen Bilder zur Anzeige in den Preisgruppen
+```bash
+/home/admin/PriceList/server/public/browser/data/ : Ablage der Konfigurationsdatei price-groups.json
+/home/admin/PriceList/server/public/browser/images/: Ablage der hochgeladenen Bilder zur Anzeige in den Preisgruppen
+```
 
 Gleichzeitig liefert der server die Webseiten und damit die Anwendungen aus. Diese befinden sich in kompilierter Form in:
 
-./server/public/brwoser/index.html
+```bash
+./server/public/browser/index.html
+```
 
 Der Server startet mit der Adresse: http://localhost:3000
 Die Admin-Seite wird über diese Adresse erreicht: http://localhost:3000/admin
+
+## Front-End
+as Frontend ist mit Angular umgesetzt und wird mit npm run build kompiliert. Das erzeugte Bundle wird im Ordner /server/public/browser/ abgelegt und von der Node.js-App ausgeliefert.
+
+## REST-API
+Die REST-API dient der WebUI zum Lesen und Speichern der Bilder und der Konfigurationsdatei. Die API ist so definiert:
+
+- `GET    /api/groups` – Liefert die aktuelle Preiskonfiguration
+- `POST   /api/groups` – Speichert eine neue Preiskonfiguration
+- `POST   /api/upload` – Lädt ein neues Bild hoch
 
 ## WLAN Zugang
 
@@ -44,15 +63,21 @@ Am HDMI-1 (der Anschluss direkt neben dem USB-C-Stromanschluss) wird der Monitor
 
 ## Starten des Raspi
 
-Beim Booten des Raspi wird der Monitori aktiviert, wenn dieser verbunden ist. Sollte keiner angeschlossen sein, dann bleibt der HDMI unbenutzt. In dem Falle Monitor anschließen und neu starten.
+Beim Booten des Raspi wird der Monitor aktiviert, wenn dieser verbunden ist. Sollte keiner angeschlossen sein, wartet das System auf das Einstecken des Monitor, bevor die Auflösung und Gochformat eingestellt werden.
 
 Mit dem Start des Raspis werden zwei Dienste gestartet:
 - preisliste.service
 - display-setup.service
 
-### preisliste.service
+### systemd Unit: preisliste.service
 
-Dieser Service startet das Skript /home/admin/preisliste/startup.sh. Dieses dient zum Updaten und Starten des Servers. Das Skript ist wie folgt:
+Dieser Service startet das Skript 
+
+```bash
+/home/admin/preisliste/startup.sh
+```
+
+Dieses dient zum Updaten und Starten des Servers. Das Skript ist wie folgt:
 
 ```bash
 [Unit]
@@ -103,10 +128,10 @@ echo "→ Server neu starten..."
 npm run prod
 ```
 
-Im Verzeichnis /home/admin/PriceList befindet sich das Projekt. Es wird zunächst geprüft, dass Netzwerk verfügbar ist. Wenn nicht wird der Server direkt gestartet. Wen es jedoch vorhanden ist, dann wird vom GitHub das Projekt geladen (branch main). Anschließend im Verzeichnis /server die NPM-Abhängigkeiten installiert und danach im darüberliegenden Verzeichnis mit dem Angular-Projekt. Beim Ausführen des build-Kommandos werden auch die Speiucherplätze für die Konfiguration und die hochgeladenen Bilder gelöscht. Um diese nicht zu verlieren, werden die vor dem build gesichert und danach wieder dort abgelegt. Danach startet auch der Server.
+Im Verzeichnis /home/admin/PriceList befindet sich das Projekt. Es wird zunächst geprüft, dass Netzwerk verfügbar ist. Wenn nicht wird der Server direkt gestartet. Wen es jedoch vorhanden ist, dann wird vom GitHub das Projekt geladen (branch main). Anschließend im Verzeichnis /server die NPM-Abhängigkeiten installiert und danach im darüberliegenden Verzeichnis mit dem Angular-Projekt. Beim Ausführen des build-Kommandos werden auch die Speicherplätze für die Konfiguration und die hochgeladenen Bilder gelöscht. Um diese nicht zu verlieren, werden die vor dem build gesichert und danach wieder dort abgelegt. Danach startet auch der Server.
 
 
-### display-setup.service
+### systemd Unit: display-setup.service
 
 Dieser Dienst setzt dann die Bildschirmauflösung und Hochkant-Format. Das Skript ist wie folgt:
 
@@ -141,11 +166,13 @@ xrandr --output HDMI-1 --mode 1920x1080 --rotate left
 
 Damit erfolgt zunächst eine Wartezeit von 31 Sekunden. Das dient dazu, dass der WebServer geladen und gestartet und der Desktop vollständig vorhanden ist. Nach deser Zeit wird mit dem xrandr-Kommando die Auflösung und Rotation des Screens gesteuert. Hier ist auch eine Warteroutine, falls der Monitor noch nicht angeschlossen ist. Das dient der automatischen Umstellung falls der Monitor später angeschlossen wird.
 
-## Brwoser im Kiosk-Mode starten
+## Browser im Kiosk-Mode starten
 
 Sobald der Server läuft wird der Brwoser gebraucht. Dieser wird über die Autostart des Desktop gestartet. Die Definition ist in dieser Datei vorgenommen:
 
+```bash
 /config/lxsession/LXDE-pi/autostart
+```
 
 und so definiert:
 
@@ -157,9 +184,33 @@ und so definiert:
 @chromium-browser --kiosk --app=http://localhost:3000
 ```
 
-das startet den Chromium-Browser mit der loaklen Adresse für das ShopBoard. 
+das startet den Chromium-Browser mit der lokalen Adresse für das ShopBoard. 
 
 # Source Code
 
 Der SourceCode befindet sich in einem privaten Github-Projekt: https://github.com/dreyer-thomas/PriceList.git.
+
+## Lizenz
+
+MIT License
+
+Copyright (c) 2025 Thomas Dreyer
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
