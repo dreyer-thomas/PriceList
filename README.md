@@ -37,9 +37,11 @@ as Frontend ist mit Angular umgesetzt und wird mit npm run build kompiliert. Das
 ## REST-API
 Die REST-API dient der WebUI zum Lesen und Speichern der Bilder und der Konfigurationsdatei. Die API ist so definiert:
 
-- `GET    /api/groups` – Liefert die aktuelle Preiskonfiguration
-- `POST   /api/groups` – Speichert eine neue Preiskonfiguration
-- `POST   /api/upload` – Lädt ein neues Bild hoch
+- `GET    /api/Preisgruppen` – Liefert die aktuelle Preiskonfiguration
+- `POST   /api/Preisgruppen` – Speichert eine neue Preiskonfiguration
+- `POST   /api/images` – Lädt ein neues Bild hoch
+- `GET    /api/images`- Lädt die Liste aller Bilder vom Server, nicht die Bilder selbst
+- `DELETE /api/images:filename` - Löscht ein Bild vom Server
 
 ## WLAN Zugang
 

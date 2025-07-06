@@ -1,17 +1,23 @@
 #!/bin/bash
 
-# === Konfiguration ===
-PROJECT_DIR="/Users/tommy/Development/Preisliste"        # Pfad zu deinem Projektverzeichnis
-BACKUP_DIR="/Users/tommy/backup"  # Ziel für Backup
+MODE=$1
+USERNAME=$2
+
+if [ -z "$USERNAME" ]; then
+  echo "❌ Kein Benutzername angegeben."
+  echo "   ./save.sh backup <benutzername>"
+  echo "   ./save.sh restore <benutzername>"
+  exit 1
+fi
+
+PROJECT_DIR="/Users/$USERNAME/Development/Preisliste"
+BACKUP_DIR="/Users/$USERNAME/backup"
 
 DATA_DIR="$PROJECT_DIR/server/public/browser/data"
 IMAGES_DIR="$PROJECT_DIR/server/public/browser/images"
 
 BACKUP_DATA="$BACKUP_DIR/data"
 BACKUP_IMAGES="$BACKUP_DIR/images"
-
-# === Modus prüfen ===
-MODE=$1
 
 if [ "$MODE" = "backup" ]; then
   echo "📦 Backup wird erstellt..."
@@ -35,6 +41,6 @@ elif [ "$MODE" = "restore" ]; then
 
 else
   echo "❌ Ungültiger Modus. Bitte verwende:"
-  echo "   ./save.sh backup    # zum Sichern"
-  echo "   ./save.sh restore   # zum Wiederherstellen"
+  echo "   ./save.sh backup <benutzername>"
+  echo "   ./save.sh restore <benutzername>"
 fi
