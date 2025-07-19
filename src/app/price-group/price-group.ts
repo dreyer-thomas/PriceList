@@ -14,7 +14,7 @@ export class PriceGroupComponent {
   @Input() type: 'kugel' | 'becher' = 'kugel';
   @Input() price: number = 0;
   @Input() active: boolean = true;
-  @Input() index: number = 0;
+  @Input() hidePrices: boolean = false;
 
   readonly titleColorClass: string = 'color-red';
 

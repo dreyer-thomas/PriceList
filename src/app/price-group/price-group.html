@@ -1,7 +1,7 @@
 <!-- KUGELEIS -->
 <div *ngIf="type === 'kugel' && active" class="kugel-block">
   <h2 class="group-title" [ngClass]="titleColorClass">{{ title }}</h2>
-  <div class="group-price">
+  <div class="group-price" *ngIf="!hidePrices">
     <strong>Preis pro Kugel:</strong> {{ price | currency:'EUR' }}
   </div>
   <ul class="article-list">
@@ -20,7 +20,9 @@
          class="becher-image" />
     <div class="becher-info">
       <div class="becher-title">{{ title }}</div>
-      <div class="becher-price">{{ articles[0].price | currency:'EUR':'symbol':'1.2-2' }}</div>
+      <div class="becher-price" *ngIf="!hidePrices">
+        {{ articles[0].price | currency:'EUR':'symbol':'1.2-2' }}
+      </div>
       <div class="becher-ingredients" *ngIf="articles[0].ingredients">
         {{ articles[0].ingredients }}
       </div>

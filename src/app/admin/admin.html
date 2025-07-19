@@ -11,6 +11,10 @@
     <p>Logo-Vorschau:</p>
     <img [src]="'/images/' + appData.appLogo" alt="Logo" />
   </div>
+  <label>
+    <input type="checkbox" [(ngModel)]="appData.hidePrices" />
+      Preise ausblenden
+  </label>
 </div>
 
 <div class="app-settings-card">

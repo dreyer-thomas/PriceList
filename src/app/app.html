@@ -16,7 +16,7 @@
             [type]="group.type"
             [price]="group.price"
             [active]="group.active"
-            [index]="i">
+            [hidePrices]="appData.hidePrices">
           </app-price-group>
         </ng-container>
       </div>
@@ -28,7 +28,7 @@
             [type]="group.type"
             [price]="group.price"
             [active]="group.active"
-            [index]="i">
+            [hidePrices]="appData.hidePrices">
           </app-price-group>
         </ng-container>
       </div>
@@ -41,7 +41,8 @@
           [articles]="group.articles"
           [type]="group.type"
           [price]="group.price"
-          [active]="group.active">
+          [active]="group.active"
+          [hidePrices]="appData.hidePrices">
         </app-price-group>
       </ng-container>
     </div>

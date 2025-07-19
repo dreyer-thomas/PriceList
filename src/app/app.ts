@@ -35,19 +35,30 @@ export class App implements OnInit {
         })
           ).subscribe((data) => {
             this.appData.appLogo = data.appLogo;
+            this.appData.hidePrices = data.hidePrices;
             this.appData.groups = data.groups.filter(group => group.active !== false);
           });
       }
 
       private loadInitialData() {
         this.service.getPriceGroups().subscribe((data) => {
-          const oldJson = JSON.stringify(this.appData);
-          const newJson = JSON.stringify(data);
+            const oldJson = JSON.stringify({
+              appLogo: this.appData.appLogo,
+              hidePrices: this.appData.hidePrices,
+              groups: this.appData.groups
+            });
 
-          if (oldJson !== newJson) {
-            this.appData.appLogo = data.appLogo;
-            this.appData.groups = data.groups.filter(group => group.active !== false);
-          }
+            const newJson = JSON.stringify({
+              appLogo: data.appLogo,
+              hidePrices: data.hidePrices,
+              groups: data.groups
+            });
+
+            if (oldJson !== newJson) {
+              console.log('Änderung erkannt, Daten werden übernommen');
+              this.appData = data;
+              this.appData.groups = data.groups.filter(g => g.active !== false);
+            }
         });
       }
 
