@@ -30,6 +30,30 @@ export class AdminComponent {
   load() {
     this.service.getPriceGroups().subscribe((data) => {
       this.appData = data;
+
+      this.appData.groups.forEach(group => {
+        if (!group.articles) {
+          group.articles = [];
+        }
+
+        // echte Article-Instanzen herstellen
+        group.articles = group.articles.map(a => {
+          const article = new Article();
+          Object.assign(article, a);
+          return article;
+        });
+
+        // Bechergruppe absichern
+        if (group.type === 'becher') {
+          if (group.articles.length === 0) {
+            group.articles = [new Article()];
+          }
+
+          // Preis
+          const parsedPrice = Number(group.articles[0].price);
+          group.articles[0].price = isNaN(parsedPrice) ? 0 : parsedPrice;
+        }
+      });
     });
   }
 
@@ -106,6 +130,24 @@ export class AdminComponent {
     }).then(() => {
       this.loadImages(); // Liste neu laden
     });
+  }
+
+  onGroupTypeChanged(group: PriceGroup) {
+    if (group.type === 'becher') {
+      if (!group.articles || group.articles.length === 0) {
+        group.articles = [new Article()];
+      }
+      // Nur setzen, wenn leer
+      if (!group.articles[0].name) {
+        group.articles[0].name = group.title;
+      }
+    }
+  }
+
+  onGroupTitleChanged(group: PriceGroup) {
+    if (group.type === 'becher' && group.articles.length) {
+      group.articles[0].name = group.title;
+    }
   }
 
 }

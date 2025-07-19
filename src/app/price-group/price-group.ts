@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Article } from '../pricegroup.model';
 
 @Component({
   selector: 'app-price-group',
@@ -9,8 +10,9 @@ import { CommonModule } from '@angular/common';
 })
 export class PriceGroupComponent {
   @Input() title: string = '';
-  @Input() image: string = '';
-  @Input() articles: {name: string, price: number, active: boolean}[] = [];
+  @Input() articles: Article[] = [];
+  @Input() type: 'kugel' | 'becher' = 'kugel';
+  @Input() price: number = 0;
   @Input() active: boolean = true;
 
   get visibleArticles() {
@@ -18,7 +20,11 @@ export class PriceGroupComponent {
   }
 
   getImageUrl(name: string): string {
-  return `/images/${name}`;
-}
+    return `/images/${name}`;
+  }
+
+  get isBecherActive(): boolean {
+    return this.articles[0]?.active ?? false;
+  }
 }
 

@@ -2,20 +2,10 @@
 <div class="app-settings-card">
   <h3>Allgemeine Einstellungen</h3>
   <div class="form-row">
-    <label for="appTitle">Titel der Seite:</label>
-    <input type="text" id="appTitle" [(ngModel)]="appData.appTitle" />
-  </div>
-  <div class="form-row">
-    <label for="appLogo">Logo-Dateiname:</label>
-    <input type="text" id="appLogo" [(ngModel)]="appData.appLogo" />
-  </div>
-  <div class="form-row">
-    <label for="zoom">Zoom:</label>
-    <input type="number" id="appZoom" [(ngModel)]="appData.zoom" />
-  </div>
-  <div class="form-row">
-    <label for="Impressum">Impressum:</label>
-    <input type="text" id="appImpressum" [(ngModel)]="appData.impressum" />
+      <label for="imageSelect">Bild auswählen:</label>
+      <select id="imageSelect" [(ngModel)]="appData.appLogo">
+          <option *ngFor="let img of images" [value]="img">{{ img }}</option>
+      </select>
   </div>
   <div class="logo-preview" *ngIf="appData.appLogo">
     <p>Logo-Vorschau:</p>
@@ -25,31 +15,86 @@
 
 <div class="app-settings-card">
   <h3>Artikelverwaltung</h3>
+
   <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
+    <!-- Gruppentyp wählen -->
+    <label>Typ:</label>
+    <select [(ngModel)]="group.type" (change)="onGroupTypeChanged(group)">
+      <option value="kugel">Kugeleis</option>
+      <option value="becher">Eisbecher</option>
+    </select>
+
     <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
-    <input type="text" [(ngModel)]="group.image" placeholder="Bilddatei" />
+
     <label>
-        <input type="checkbox" [(ngModel)]="group.active" />Aktiv
+      <input type="checkbox" [(ngModel)]="group.active" /> Aktiv
     </label>
 
-    <button (click)="deleteGroup(i)">Gruppe löschen</button>
+    <!-- Preis bei Kugelgruppe -->
+    <div *ngIf="group.type === 'kugel'">
+      <label>Preis pro Kugel:</label>
+      <input type="number" [(ngModel)]="group.price" />
+    </div>
 
-    <div *ngFor="let article of group.articles; let j = index">
+    <!-- Artikel bei Kugelgruppe -->
+    <div *ngIf="group.type === 'kugel'">
+      <div *ngFor="let article of group.articles; let j = index">
+        <form class="article-form">
+          <input *ngIf="group.type === 'kugel'"
+              type="text"
+              [(ngModel)]="article.name"
+              [name]="'name-' + i + '-' + j"
+              placeholder="Sorte" />
+          <select [(ngModel)]="article.image" [name]="'image-' + i + '-' + j">
+              <option *ngFor="let img of images" [value]="img">{{ img }}</option>
+          </select>
+          <label>
+            <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" /> Aktiv
+          </label>
+          <button class="delete" (click)="removeArticle(i, j)">Löschen</button>
+        </form>
+      </div>
+      <button (click)="addArticle(i)">Neue Sorte</button>
+    </div>
+
+    <div *ngIf="group.type === 'becher'">
       <form class="article-form">
-        <input type="text" [(ngModel)]="article.name" [name]="'name-' + i + '-' + j" placeholder="Artikelname" />
-        <input type="number" [(ngModel)]="article.price" [name]="'price-' + i + '-' + j" placeholder="Preis" />
+        <!-- Bechername: wird über group.title geregelt, kein Feld hier nötig -->
 
+        <!-- Preis -->
+        <input type="number"
+              [(ngModel)]="group.articles[0].price"
+              [name]="'price-' + i"
+              placeholder="Preis" />
+
+        <!-- Bild -->
+        <select [(ngModel)]="group.articles[0].image"
+                [name]="'image-' + i">
+          <option *ngFor="let img of images" [value]="img">{{ img }}</option>
+        </select>
+
+        <!-- Zutaten -->
+        <textarea [(ngModel)]="group.articles[0].ingredients"
+                  [name]="'ingredients-' + i"
+                  placeholder="Zutaten (kommasepariert)">
+        </textarea>
+
+        <!-- Aktiv -->
         <label>
-          <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" aria-label="Artikel aktivieren/deaktivieren" />
+          <input type="checkbox"
+                [(ngModel)]="group.articles[0].active"
+                [name]="'active-' + i" />
+          Aktiv
         </label>
+      </form>
+    </div>
 
-        <button class="delete" (click)="removeArticle(i, j)"><i class="fa fa-trash">Löschen</i></button>
-     </form>
-    </div>
-      <button (click)="addArticle(i)">Neuer Artikel</button>
-    </div>
-    <button (click)="addGroup()">Neue Preisgruppe</button>
+    <button (click)="deleteGroup(i)">Gruppe löschen</button>
+    <hr />
   </div>
+
+  <button (click)="addGroup()">+ Neue Preisgruppe</button>
+</div>
 
 <div class="app-settings-card">
   <h3>Hochgeladene Bilder</h3>
