@@ -41,4 +41,5 @@ main, app-root, .content-wrapper {
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  margin-top: 4rem;
 }

@@ -9,24 +9,26 @@
 
     <div class="column-layout">
       <div class="column">
-        <ng-container *ngFor="let group of leftColumnGroups; trackBy: trackByTitle">
+        <ng-container *ngFor="let group of leftColumnGroups; let i = index; trackBy: trackByTitle">
           <app-price-group
             [title]="group.title"
             [articles]="group.articles"
             [type]="group.type"
             [price]="group.price"
-            [active]="group.active">
+            [active]="group.active"
+            [index]="i">
           </app-price-group>
         </ng-container>
       </div>
       <div class="column">
-        <ng-container *ngFor="let group of rightColumnGroups; trackBy: trackByTitle">
+        <ng-container *ngFor="let group of rightColumnGroups; let i = index; trackBy: trackByTitle">
           <app-price-group
             [title]="group.title"
             [articles]="group.articles"
             [type]="group.type"
             [price]="group.price"
-            [active]="group.active">
+            [active]="group.active"
+            [index]="i">
           </app-price-group>
         </ng-container>
       </div>

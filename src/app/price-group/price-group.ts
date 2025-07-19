@@ -14,6 +14,14 @@ export class PriceGroupComponent {
   @Input() type: 'kugel' | 'becher' = 'kugel';
   @Input() price: number = 0;
   @Input() active: boolean = true;
+  @Input() index: number = 0;
+
+  readonly titleColorClass: string = 'color-red';
+
+  constructor() {
+    const classes = ['color-red', 'color-blue', 'color-green', 'color-orange', 'color-purple'];
+    this.titleColorClass = classes[Math.floor(Math.random() * classes.length)];
+  }
 
   get visibleArticles() {
      return this.articles?.filter(a => a.active !== false);
@@ -26,5 +34,6 @@ export class PriceGroupComponent {
   get isBecherActive(): boolean {
     return this.articles[0]?.active ?? false;
   }
+
 }
 

@@ -7,7 +7,7 @@
 
 .group-price {
   font-size: 1rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
 }
 
 .article-list {
@@ -56,4 +56,24 @@
   font-size: 1.5rem;
   color: #444;
   line-height: 1.4;
+}
+
+.color-red {
+  color: #c62828;
+}
+
+.color-blue {
+  color: #1565c0;
+}
+
+.color-green {
+  color: #2e7d32;
+}
+
+.color-orange {
+  color: #ef6c00;
+}
+
+.color-purple {
+  color: #6a1b9a;
 }

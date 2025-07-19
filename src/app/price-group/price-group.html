@@ -1,6 +1,6 @@
 <!-- KUGELEIS -->
 <div *ngIf="type === 'kugel' && active" class="kugel-block">
-  <h2 class="group-title">{{ title }}</h2>
+  <h2 class="group-title" [ngClass]="titleColorClass">{{ title }}</h2>
   <div class="group-price">
     <strong>Preis pro Kugel:</strong> {{ price | currency:'EUR' }}
   </div>
