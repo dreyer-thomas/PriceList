@@ -11,7 +11,7 @@ import { PriceGroup } from './pricegroup.model';
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, HeaderComponent, PriceGroupComponent],
+  imports: [CommonModule, PriceGroupComponent],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true
