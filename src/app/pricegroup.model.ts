@@ -4,6 +4,7 @@ export class PriceGroup {
   type: 'kugel' | 'becher' = 'kugel'; // NEU
   price: number = 0; // Nur für Typ 'kugel'
   articles: Article[] = [];
+  column: 'left' | 'right' = 'left';
 }
 
 export class Article {

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PriceGroup } from './price-group';
+import { PriceGroup } from '../pricegroup.model';
 
 describe('PriceGroup', () => {
   let component: PriceGroup;

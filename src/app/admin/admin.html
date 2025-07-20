@@ -28,6 +28,16 @@
       <option value="becher">Eisbecher</option>
     </select>
 
+    <!-- Spalte wählen (nur bei Kugeleis)-->
+    <div *ngIf="group.type === 'kugel'">
+        <label>Spalte:</label>
+        <select [(ngModel)]="group.column">
+          <option value="left">Links</option>
+          <option value="right">Rechts</option>
+        </select>
+    </div>
+
+
     <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
 
     <label>

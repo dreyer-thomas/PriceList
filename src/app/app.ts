@@ -73,11 +73,11 @@ export class App implements OnInit {
       }
 
       get leftColumnGroups(): PriceGroup[] {
-        return this.kugelGroups.filter((_, i) => i % 2 === 0);
+        return this.kugelGroups.filter(g => g.column === 'left');
       }
 
       get rightColumnGroups(): PriceGroup[] {
-        return this.kugelGroups.filter((_, i) => i % 2 === 1);
+        return this.kugelGroups.filter(g => g.column === 'right');
       }
 
       trackByTitle(index: number, group: PriceGroup): string {
