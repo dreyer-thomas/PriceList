@@ -1,12 +1,12 @@
 /* Gemeinsame Formatierung */
 .group-title {
-  font-size: 2.5rem;
+  font-size: 3.5rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
 
 .group-price {
-  font-size: 1rem;
+  font-size: 2.0rem;
   margin-bottom: 0.5rem;
 }
 
@@ -14,7 +14,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 1.5rem;
+  font-size: 2.2rem;
 }
 
 .article-list li {
@@ -26,11 +26,10 @@
   display: flex;
   align-items: flex-start;
   gap: 2rem;
-  margin-bottom: 2rem;
 }
 
 .becher-image {
-  width: 200px;
+  width: 150px;
   border-radius: 1rem;
   object-fit: cover;
 }
@@ -41,19 +40,19 @@
 }
 
 .becher-title {
-  font-size: 2.8rem;
+  font-size: 2.25rem;
   font-weight: bold;
   margin-bottom: 0.2rem;
 }
 
 .becher-price {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
   font-weight: 600;
   margin-bottom: 0.2rem;
 }
 
 .becher-ingredients {
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   color: #444;
   line-height: 1.4;
 }

@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from './header/header';
 import { PriceGroupComponent } from './price-group/price-group';
 import { PriceGroupService } from './services/price-group';
 import { interval, switchMap, of } from 'rxjs';
