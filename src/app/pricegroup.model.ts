@@ -21,3 +21,9 @@ export class AppData {
     public hidePrices: boolean = false
   ) {}
 }
+
+export interface Image {
+  file: string;
+  name: string;
+  url: string;
+}

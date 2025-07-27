@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppData, Article, PriceGroup } from '../pricegroup.model';
 import { AdminService } from './admin.service';
-import { Select } from 'primeng/select';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { TabsModule } from 'primeng/tabs';
 import { ButtonDirective } from 'primeng/button';
@@ -14,15 +13,16 @@ import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { AdminGeneralComponent } from '../admin-general/admin-general';
 import { AdminImagesComponent } from '../admin-images/admin-images';
-import { FileUploadHandlerEvent, FileUpload } from 'primeng/fileupload';
+import { AdminArticlesComponent } from '../admin-articles/admin-articles';
+
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
-  imports: [CommonModule, FormsModule, Select, TabsModule, ButtonDirective, 
+  imports: [CommonModule, FormsModule, TabsModule, ButtonDirective, 
             ToggleSwitchModule, AccordionModule, InputTextModule, TextareaModule, InputNumberModule,
-            AdminGeneralComponent, AdminImagesComponent
+            AdminGeneralComponent, AdminImagesComponent, AdminArticlesComponent
           ]
 })
 export class AdminComponent {
@@ -90,8 +90,8 @@ export class AdminComponent {
       group.articles.push(new Article());
   }
 
-  removeArticle(groupIndex: number, articleIndex: number) {
-    this.appData.groups[groupIndex].articles.splice(articleIndex, 1);
+  removeArticle(event: { groupIndex: number; articleIndex: number }) {
+    this.appData.groups[event.groupIndex].articles.splice(event.articleIndex, 1);
   }
 
   addGroup() {
