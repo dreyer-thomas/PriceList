@@ -48,125 +48,252 @@
         </p-tabpanel>
 
         <!-- Tab: Artikel -->
-          <p-tabpanel value="1">
-            <div class="app-settings-card">
-              <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
-                <!-- Gruppentyp -->
-                <label>Typ:</label>
-                <select [(ngModel)]="group.type" (change)="onGroupTypeChanged(group)">
-                  <option value="kugel">Kugeleis</option>
-                  <option value="becher">Eisbecher</option>
-                </select>
-
-                <!-- Spalte nur bei Kugel -->
-                <div *ngIf="group.type === 'kugel'">
-                  <label>Spalte:</label>
-                  <select [(ngModel)]="group.column">
-                    <option value="left">Links</option>
-                    <option value="right">Rechts</option>
-                  </select>
-                </div>
-
-                <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
-
-                <label>
-                  <input type="checkbox" [(ngModel)]="group.active" /> Aktiv
-                </label>
-
-                <!-- Preis/Artikel für Kugel -->
-                <div *ngIf="group.type === 'kugel'">
-                  <label>Preis pro Kugel:</label>
-                  <input type="number" [(ngModel)]="group.price" />
-
-                  <div *ngFor="let article of group.articles; let j = index">
-                    <form class="article-form">
-                      <input type="text"
-                            [(ngModel)]="article.name"
-                            [name]="'name-' + i + '-' + j"
-                            placeholder="Sorte" />
-                      <select [(ngModel)]="article.image" [name]="'image-' + i + '-' + j">
-                        <option *ngFor="let img of images" [value]="img.file">{{ img.name }}</option>
-                      </select>
-                      <label>
-                        <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" /> Aktiv
-                      </label>
-                      <button (click)="removeArticle(i, j)">Löschen</button>
-                    </form>
+        <p-tabpanel value="1">
+          <p-accordion [multiple]="true">
+            <p-accordion-panel *ngFor="let group of appData.groups; let i = index" [value]="i">
+                <p-accordion-header>
+                  <div class="flex justify-content-between align-items-center w-full pr-4">
+                    <div class="flex align-items-center gap-2">
+                      <i class="pi" [ngClass]="group.type === 'kugel' ? 'pi-circle' : 'pi-trophy'"></i>
+                      <span class="ml-2">{{ group.title || 'Neue Gruppe' }}</span>
+                    </div>
+                    <p-toggle-switch [(ngModel)]="group.active" (click)="$event.stopPropagation()"></p-toggle-switch>
                   </div>
-                  <button (click)="addArticle(i)">Neue Sorte</button>
-                </div>
+                </p-accordion-header>
+                <p-accordion-content class="pl-5">
 
-                <!-- Bechergruppe -->
-                <div *ngIf="group.type === 'becher'">
-                  <form class="article-form">
-                    <input type="number"
-                          [(ngModel)]="group.articles[0].price"
-                          [name]="'price-' + i"
-                          placeholder="Preis" />
-                    <select [(ngModel)]="group.articles[0].image"
-                            [name]="'image-' + i">
-                      <option *ngFor="let img of images" [value]="img.file">{{ img.name }}</option>
-                    </select>
-                    <textarea [(ngModel)]="group.articles[0].ingredients"
-                              [name]="'ingredients-' + i"
-                              placeholder="Zutaten (kommasepariert)">
-                    </textarea>
-                    <label>
-                      <input type="checkbox"
-                            [(ngModel)]="group.articles[0].active"
-                            [name]="'active-' + i" />
-                      Aktiv
-                    </label>
-                  </form>
-                </div>
-
-                <button (click)="deleteGroup(i)">Gruppe löschen</button>
-                <hr />
-              </div>
-
-              <button (click)="addGroup()">+ Neue Preisgruppe</button>
-            </div>
-          </p-tabpanel>
-
-          <!-- Tab: Bilder -->
-            <p-tabpanel value="2">
-              <div class="app-settings-card">
-
-
-                <p-data-view #dv [value]="images">
-                  <ng-template #list let-items>
-                      <div *ngFor="let img of images; let first = first">
-                          <div class="flex align-items-center gap-2">
-                              <img class="col-4 w-2 h-2" [src]="img.url"/>
-                              <span class="col-6 align-self-center">{{ img.file }}</span>
-                              <button pButton (click)="deleteImage(img.file)" class="col-2">
-                                  Delete
-                              </button>
+                    <!-- Gruppentyp -->
+                    <div class="field w-full md:w-4 mb-2">
+                      <div class="grid w-full align-items-center">
+                          <div class="col-3">
+                              <label for="type">Typ:</label>
+                          </div>
+                          <div class="col-9">
+                              <p-select
+                                class="py-1 leading-none w-full"
+                                size="small"
+                                [(ngModel)]="group.type"
+                                (ngModelChange)="onGroupTypeChanged(group)"
+                                [options]="[{label: 'Kugeleis', value: 'kugel'}, {label: 'Eisbecher', value: 'becher'}]"
+                                optionLabel="label"
+                                optionValue="value"
+                                inputId="type"
+                                placeholder="Typ wählen">
+                              </p-select>
                           </div>
                       </div>
-                  </ng-template>
-                </p-data-view>
-                <p-fileupload #fileUpload
-                              mode="advanced" 
-                              chooseLabel="Datei laden" 
-                              chooseIcon="pi pi-upload" 
-                              customUpload="true" 
-                              (uploadHandler)="upload($event,fileUpload)" />
+                    </div>
 
-                <!--
-                <div class="image-list" *ngIf="images.length">
-                  <div *ngFor="let img of images" class="image-entry">
-                    <img [src]="img.url" [alt]="img.name" class="preview-image" />
-                    <span>{{ img.name }}</span>
-                    <button (click)="deleteImage(img.file)">Löschen</button>
+                    <div class="field w-full md:w-4 mb-2">
+                       <div class="grid w-full">
+                        <div class="col-3">
+                          <label for="column">Name:</label>
+                        </div>
+                        <div class="col-9">
+                          <input type="text" pInputText [(ngModel)]="group.title" placeholder="Name der Preisgruppe" class="w-full" />
+                        </div>
+                      </div>
+                    </div>
+
+                    <div *ngIf="group.type === 'kugel'" class="field w-full md:w-4 mb-2">
+                      <div class="grid w-full align-items-center">
+                          <div class="col-3">
+                              <label for="column">Spalte:</label>
+                          </div>
+                          <div class="col-9">
+                              <p-select
+                                size="small"
+                                class="py-1 leading-none w-full"
+                                [(ngModel)]="group.column"
+                                [options]="[{ label: 'Links', value: 'left' }, { label: 'Rechts', value: 'right' }]"
+                                optionLabel="label"
+                                optionValue="value"
+                                inputId="column"
+                                placeholder="Spalte wählen">
+                              </p-select>
+                          </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="group.type === 'kugel'">
+
+                        <!-- Preis pro Kugel -->
+                        <div class="field w-full md:w-4 mb-2">
+                          <div class="grid w-full align-items-center">
+                            <div class="col-3">
+                              <label for="price">Kugelpreis:</label>
+                            </div>
+                            <div class="col-9">
+                                <p-inputnumber  [(ngModel)]="group.price"
+                                                mode="currency"
+                                                currency="EUR"
+                                                locale="de-DE"
+                                                class="w-full" />
+                            </div>
+                          </div>
+                        </div>
+
+                        <div class="field w-full md:w-4">
+                          <label>Artikel:</label>
+                        </div>
+
+                        <!-- Artikel-Liste -->
+                        <div class="field w-full md:w-4 mb-2" *ngFor="let article of group.articles; let j = index">
+                          <div class="grid w-full align-items-center">
+
+                              <!-- Sorte -->
+                              <div class="col-3">
+                                <input type="text" pInputText [(ngModel)]="article.name" [name]="'name-' + i + '-' + j" placeholder="Sorte" class="w-full" />
+                              </div>
+
+                              <!-- Bildauswahl -->
+                              <div class="col-5">
+                                <p-select
+                                    [options]="images"
+                                    class="py-1 leading-none w-full"
+                                    size="small"
+                                    [(ngModel)]="article.image"
+                                    optionLabel="name"
+                                    optionValue="file"
+                                    placeholder="Bild auswählen"
+                                    class="w-full small-select">
+                                    <ng-template let-image #item>
+                                      <div class="flex align-items-center gap-2">
+                                        <img [src]="image.url" class="border-round w-1 h-1 border-round" />
+                                        <span class="align-self-center">{{ image.name }}</span>
+                                      </div>
+                                    </ng-template>
+
+                                    <ng-template let-image #selectedItem>
+                                      <div class="flex align-items-center gap-2">
+                                        <img [src]="image.url" class="rounded object-contain w-1 h-1 border-round"/>
+                                        <span class="align-self-center">{{ image.name }}</span>
+                                      </div>
+                                    </ng-template>
+                                </p-select>
+                              </div>
+
+                              <!-- Aktiv-Switch + Löschen -->
+                              <div class="col-2 flex align-items-center">
+                                <p-toggle-switch [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" />
+                              </div>
+
+                              <div class="col-2 flex align-items-center justify-content-end">
+                                <button pButton icon="pi pi-trash" severity="danger" (click)="removeArticle(i, j)"></button>
+                              </div>
+
+                            </div>
+                          </div>
+
+                      <!-- Neue Sorte -->
+                      <div class="field w-full md:w-4 mb-2">
+                        <button class="col-5" pButton label="Neue Sorte" icon="pi pi-plus" (click)="addArticle(i)"></button>
+                      </div>
+
+                    </div>
+
+                    <div *ngIf="group.type === 'becher'" class="field w-full md:w-4">
+                      <div class="grid w-full align-items-center">
+
+                        <!-- Preis -->
+                        <div class="col-3">
+                          <label for="price-{{ i }}">Preis:</label>
+                        </div>
+                        <div class="col-9">
+                            <p-inputnumber [(ngModel)]="group.articles[0].price"
+                                [name]="'price-' + i"
+                                mode="currency"
+                                currency="EUR"
+                                locale="de-DE"
+                                class="w-full" />
+                        </div>
+
+                        <!-- Bildauswahl -->
+                        <div class="col-3">
+                          <label for="image-{{ i }}">Bild:</label>
+                        </div>
+                        <div class="col-9">
+                          <p-select
+                            [(ngModel)]="group.articles[0].image"
+                            [name]="'image-' + i"
+                            [options]="images"
+                            optionLabel="name"
+                            optionValue="file"
+                            placeholder="Bild auswählen"
+                            class="w-full">
+                            <ng-template let-image #item>
+                              <div class="flex align-items-center gap-2">
+                                <img [src]="image.url" class="w-2rem h-2rem object-cover border-round" />
+                                <span class="align-self-center">{{ image.name }}</span>
+                              </div>
+                            </ng-template>
+                            <ng-template let-image #selectedItem>
+                              <div class="flex align-items-center gap-2">
+                                <img [src]="image.url" class="w-2rem h-2rem object-cover border-round" />
+                                <span class="align-self-center">{{ image.name }}</span>
+                              </div>
+                            </ng-template>
+                          </p-select>
+                        </div>
+
+                        <!-- Zutaten -->
+                        <div class="col-3">
+                          <label for="ingredients-{{ i }}">Zutaten:</label>
+                        </div>
+                        <div class="col-9">
+                          <textarea pInputTextarea 
+                                    [(ngModel)]="group.articles[0].ingredients" 
+                                    [name]="'ingredients-' + i" 
+                                    placeholder="Zutaten (kommasepariert)" 
+                                    rows="1" 
+                                    class="w-full">
+                          </textarea>
+                        </div>
+
+                        <!-- Aktiv 
+                        <div class="col-3">
+                          <label for="activeSwitch-{{ i }}">Aktiv:</label>
+                        </div>
+                        <div class="col-9">
+                          <p-toggle-switch [(ngModel)]="group.articles[0].active" [name]="'active-' + i" inputId="activeSwitch-{{ i }}" />
+                        </div>
+                      -->
+
+                      </div>
+                    </div>
+
+                     <div class="field w-full md:w-4 mb-2">
+                        <button class="col-5" pButton icon="pi pi-trash" severity="danger" (click)="deleteGroup(i)">Gruppe löschen</button>
+                     </div>
+              </p-accordion-content>
+            </p-accordion-panel>
+          </p-accordion>
+
+          <button pButton (click)="addGroup()">Neue Preisgruppe</button>
+
+        </p-tabpanel>
+
+        <!-- Tab: Bilder -->
+        <p-tabpanel value="2">
+          <div class="app-settings-card">
+
+            <p-data-view #dv [value]="images">
+              <ng-template #list let-items>
+                  <div *ngFor="let img of images; let first = first">
+                      <div class="flex align-items-center gap-2">
+                          <img class="col-4 w-2 h-2" [src]="img.url"/>
+                          <span class="col-6 align-self-center">{{ img.file }}</span>
+                          <button pButton (click)="deleteImage(img.file)" class="col-2" icon="pi pi-trash" severity="danger"></button>
+                      </div>
                   </div>
-                </div>
-
-                <div class="image-upload">
-                  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-                  <button (click)="onUpload()">Bild hochladen</button>
-                </div>
-                -->
-              </div>
-            </p-tabpanel>
+              </ng-template>
+            </p-data-view>
+            <p-fileupload #fileUpload
+                          mode="advanced" 
+                          chooseLabel="Datei laden" 
+                          chooseIcon="pi pi-upload" 
+                          customUpload="true" 
+                          (uploadHandler)="upload($event,fileUpload)" />
+          </div>
+        </p-tabpanel>
   </p-tabpanels>

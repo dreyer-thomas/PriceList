@@ -11,18 +11,24 @@ import { ButtonDirective } from 'primeng/button';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { DataViewModule } from 'primeng/dataview';
 import { FileUploadHandlerEvent, FileUploadModule, FileUpload} from 'primeng/fileupload';
+import { AccordionModule } from 'primeng/accordion';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { InputNumberModule } from 'primeng/inputnumber';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
-  imports: [CommonModule, FormsModule, Select, TabsModule, ButtonDirective, ToggleSwitchModule, DataViewModule, FileUploadModule]
+  imports: [CommonModule, FormsModule, Select, TabsModule, ButtonDirective, 
+            ToggleSwitchModule, DataViewModule, FileUploadModule,
+            AccordionModule, InputTextModule, TextareaModule, InputNumberModule
+          ]
 })
 export class AdminComponent {
   appData: AppData = new AppData();
   private readonly apiUrl = '/api/preisgruppen';
 
-  // selectedFile?: File;
   previewUrl?: string;
   images: { name: string; file: string; url: string }[] = [];
 
@@ -96,50 +102,33 @@ export class AdminComponent {
     this.appData.groups.splice(index, 1);
   }
 
-  /*
-  onFileSelected(event: FileSelectEvent) {
-    const file = event.currentFiles[0];
-    console.log("File: "+ event.currentFiles[0].);
-    if (file) {
-      this.selectedFile = file;
+  onUpload(file: File) {
+    const formData = new FormData();
+    formData.append('image', file);
 
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  } 
-  */
-
-    onUpload(file: File) {
-      const formData = new FormData();
-      formData.append('image', file);
-
-      fetch('/api/images', {
-        method: 'POST',
-        body: formData
-      }).then(response => {
-        if (response.ok) {
-          console.log('Upload erfolgreich');
-        } else {
-          console.error('Fehler beim Upload');
-        }
-      }).catch(err => {
-        console.error('Fehler beim Hochladen:', err);
-      });
-      this.loadImages();
-    }
-
-    upload(event: FileUploadHandlerEvent, fileUpload: FileUpload)
-    {
-      console.log("upload: called");
-      for (let file of event.files) {
-        this.onUpload(file);
+    fetch('/api/images', {
+      method: 'POST',
+      body: formData
+    }).then(response => {
+      if (response.ok) {
+        console.log('Upload erfolgreich');
+      } else {
+        console.error('Fehler beim Upload');
       }
-      // Liste im UI leeren
-      fileUpload.clear();
+    }).catch(err => {
+      console.error('Fehler beim Hochladen:', err);
+    });
+    this.loadImages();
+  }
+
+  upload(event: FileUploadHandlerEvent, fileUpload: FileUpload)
+  {
+    for (let file of event.files) {
+      this.onUpload(file);
     }
+    // Liste im UI leeren
+    fileUpload.clear();
+  }
 
   loadImages() {
     fetch('/api/images')
