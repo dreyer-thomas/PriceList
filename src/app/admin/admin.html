@@ -1,131 +1,172 @@
+<!-- Kopfzeile -->
 
-<div class="app-settings-card">
-  <h3>Allgemeine Einstellungen</h3>
-  <div class="form-row">
-      <label for="imageSelect">Bild auswählen:</label>
-      <select id="imageSelect" [(ngModel)]="appData.appLogo">
-          <option *ngFor="let img of images" [value]="img">{{ img }}</option>
-      </select>
-  </div>
-  <div class="logo-preview" *ngIf="appData.appLogo">
-    <p>Logo-Vorschau:</p>
-    <img [src]="'/images/' + appData.appLogo" alt="Logo" />
-  </div>
-  <label>
-    <input type="checkbox" [(ngModel)]="appData.hidePrices" />
-      Preise ausblenden
-  </label>
-</div>
-
-<div class="app-settings-card">
-  <h3>Artikelverwaltung</h3>
-
-  <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
-    <!-- Gruppentyp wählen -->
-    <label>Typ:</label>
-    <select [(ngModel)]="group.type" (change)="onGroupTypeChanged(group)">
-      <option value="kugel">Kugeleis</option>
-      <option value="becher">Eisbecher</option>
-    </select>
-
-    <!-- Spalte wählen (nur bei Kugeleis)-->
-    <div *ngIf="group.type === 'kugel'">
-        <label>Spalte:</label>
-        <select [(ngModel)]="group.column">
-          <option value="left">Links</option>
-          <option value="right">Rechts</option>
-        </select>
+<!-- Tabstruktur -->
+<p-tabs value="0">
+  <p-tablist>
+    <p-tab value="0">Allgemein</p-tab>
+    <p-tab value="1">Artikel</p-tab>
+    <p-tab value="2">Bilder</p-tab>
+    <div class="flex justify-between items-center mb-4">
+      <button pButton icon="pi pi-save" label="Speichern" (click)="save()"></button>
     </div>
+  </p-tablist>
+  <p-tabpanels>
+        <!-- Tab: Allgemein -->
+        <p-tabpanel value="0">
+          <div class="app-settings-card">
+
+            <div class="form-row">
+              <label for="imageSelect">Bild auswählen:</label>
+              <p-select
+                [options]="images"
+                [(ngModel)]="appData.appLogo"
+                optionLabel="name"
+                optionValue="file"
+                placeholder="Bild auswählen"
+                class="w-full">
+                <ng-template let-image #item>
+                  <div class="flex align-items-center gap-2">
+                    <img [src]="image.url" class="border-round w-1 h-1 border-round" />
+                    <span class="align-self-center">{{ image.name }}</span>
+                  </div>
+                </ng-template>
+
+                <ng-template let-image #selectedItem>
+                  <div class="flex align-items-center gap-2">
+                    <img [src]="image.url" class="rounded object-contain w-1 h-1 border-round"/>
+                    <span class="align-self-center">{{ image.name }}</span>
+                  </div>
+                </ng-template>
+              </p-select>
+            </div>
+            <!-- Switch to hide prices -->
+            <div class="flex justify-between items-center w-full mb-2 gap-3">
+              <p-toggle-switch [(ngModel)]="appData.hidePrices"></p-toggle-switch>
+              <label for="hidePrices" class="w-1/2">Preise ausblenden</label>
+            </div>
+          </div>
+        </p-tabpanel>
+
+        <!-- Tab: Artikel -->
+          <p-tabpanel value="1">
+            <div class="app-settings-card">
+              <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
+                <!-- Gruppentyp -->
+                <label>Typ:</label>
+                <select [(ngModel)]="group.type" (change)="onGroupTypeChanged(group)">
+                  <option value="kugel">Kugeleis</option>
+                  <option value="becher">Eisbecher</option>
+                </select>
+
+                <!-- Spalte nur bei Kugel -->
+                <div *ngIf="group.type === 'kugel'">
+                  <label>Spalte:</label>
+                  <select [(ngModel)]="group.column">
+                    <option value="left">Links</option>
+                    <option value="right">Rechts</option>
+                  </select>
+                </div>
+
+                <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
+
+                <label>
+                  <input type="checkbox" [(ngModel)]="group.active" /> Aktiv
+                </label>
+
+                <!-- Preis/Artikel für Kugel -->
+                <div *ngIf="group.type === 'kugel'">
+                  <label>Preis pro Kugel:</label>
+                  <input type="number" [(ngModel)]="group.price" />
+
+                  <div *ngFor="let article of group.articles; let j = index">
+                    <form class="article-form">
+                      <input type="text"
+                            [(ngModel)]="article.name"
+                            [name]="'name-' + i + '-' + j"
+                            placeholder="Sorte" />
+                      <select [(ngModel)]="article.image" [name]="'image-' + i + '-' + j">
+                        <option *ngFor="let img of images" [value]="img.file">{{ img.name }}</option>
+                      </select>
+                      <label>
+                        <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" /> Aktiv
+                      </label>
+                      <button (click)="removeArticle(i, j)">Löschen</button>
+                    </form>
+                  </div>
+                  <button (click)="addArticle(i)">Neue Sorte</button>
+                </div>
+
+                <!-- Bechergruppe -->
+                <div *ngIf="group.type === 'becher'">
+                  <form class="article-form">
+                    <input type="number"
+                          [(ngModel)]="group.articles[0].price"
+                          [name]="'price-' + i"
+                          placeholder="Preis" />
+                    <select [(ngModel)]="group.articles[0].image"
+                            [name]="'image-' + i">
+                      <option *ngFor="let img of images" [value]="img.file">{{ img.name }}</option>
+                    </select>
+                    <textarea [(ngModel)]="group.articles[0].ingredients"
+                              [name]="'ingredients-' + i"
+                              placeholder="Zutaten (kommasepariert)">
+                    </textarea>
+                    <label>
+                      <input type="checkbox"
+                            [(ngModel)]="group.articles[0].active"
+                            [name]="'active-' + i" />
+                      Aktiv
+                    </label>
+                  </form>
+                </div>
+
+                <button (click)="deleteGroup(i)">Gruppe löschen</button>
+                <hr />
+              </div>
+
+              <button (click)="addGroup()">+ Neue Preisgruppe</button>
+            </div>
+          </p-tabpanel>
+
+          <!-- Tab: Bilder -->
+            <p-tabpanel value="2">
+              <div class="app-settings-card">
 
 
-    <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
+                <p-data-view #dv [value]="images">
+                  <ng-template #list let-items>
+                      <div *ngFor="let img of images; let first = first">
+                          <div class="flex align-items-center gap-2">
+                              <img class="col-4 w-2 h-2" [src]="img.url"/>
+                              <span class="col-6 align-self-center">{{ img.file }}</span>
+                              <button pButton (click)="deleteImage(img.file)" class="col-2">
+                                  Delete
+                              </button>
+                          </div>
+                      </div>
+                  </ng-template>
+                </p-data-view>
+                <p-fileupload #fileUpload
+                              mode="advanced" 
+                              chooseLabel="Datei laden" 
+                              chooseIcon="pi pi-upload" 
+                              customUpload="true" 
+                              (uploadHandler)="upload($event,fileUpload)" />
 
-    <label>
-      <input type="checkbox" [(ngModel)]="group.active" /> Aktiv
-    </label>
+                <!--
+                <div class="image-list" *ngIf="images.length">
+                  <div *ngFor="let img of images" class="image-entry">
+                    <img [src]="img.url" [alt]="img.name" class="preview-image" />
+                    <span>{{ img.name }}</span>
+                    <button (click)="deleteImage(img.file)">Löschen</button>
+                  </div>
+                </div>
 
-    <!-- Preis bei Kugelgruppe -->
-    <div *ngIf="group.type === 'kugel'">
-      <label>Preis pro Kugel:</label>
-      <input type="number" [(ngModel)]="group.price" />
-    </div>
-
-    <!-- Artikel bei Kugelgruppe -->
-    <div *ngIf="group.type === 'kugel'">
-      <div *ngFor="let article of group.articles; let j = index">
-        <form class="article-form">
-          <input *ngIf="group.type === 'kugel'"
-              type="text"
-              [(ngModel)]="article.name"
-              [name]="'name-' + i + '-' + j"
-              placeholder="Sorte" />
-          <select [(ngModel)]="article.image" [name]="'image-' + i + '-' + j">
-              <option *ngFor="let img of images" [value]="img">{{ img }}</option>
-          </select>
-          <label>
-            <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" /> Aktiv
-          </label>
-          <button class="delete" (click)="removeArticle(i, j)">Löschen</button>
-        </form>
-      </div>
-      <button (click)="addArticle(i)">Neue Sorte</button>
-    </div>
-
-    <div *ngIf="group.type === 'becher'">
-      <form class="article-form">
-        <!-- Bechername: wird über group.title geregelt, kein Feld hier nötig -->
-
-        <!-- Preis -->
-        <input type="number"
-              [(ngModel)]="group.articles[0].price"
-              [name]="'price-' + i"
-              placeholder="Preis" />
-
-        <!-- Bild -->
-        <select [(ngModel)]="group.articles[0].image"
-                [name]="'image-' + i">
-          <option *ngFor="let img of images" [value]="img">{{ img }}</option>
-        </select>
-
-        <!-- Zutaten -->
-        <textarea [(ngModel)]="group.articles[0].ingredients"
-                  [name]="'ingredients-' + i"
-                  placeholder="Zutaten (kommasepariert)">
-        </textarea>
-
-        <!-- Aktiv -->
-        <label>
-          <input type="checkbox"
-                [(ngModel)]="group.articles[0].active"
-                [name]="'active-' + i" />
-          Aktiv
-        </label>
-      </form>
-    </div>
-
-    <button (click)="deleteGroup(i)">Gruppe löschen</button>
-    <hr />
-  </div>
-
-  <button (click)="addGroup()">+ Neue Preisgruppe</button>
-</div>
-
-<div class="app-settings-card">
-  <h3>Hochgeladene Bilder</h3>
-  <div class="image-list" *ngIf="images.length">
-    <div *ngFor="let img of images" class="image-entry">
-      <img [src]="'/images/' + img" [alt]="img" class="preview-image" />
-      <span>{{ img }}</span>
-      <button (click)="deleteImage(img)">Löschen</button>
-    </div>
-  </div>
-  <div class="image-upload">
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-    <button (click)="onUpload()">Bild hochladen</button>
-  </div>
-</div>
-
-<div class="app-settings-card">
-  <h3>Konfiguration speichern</h3>
-  <button (click)="save()">Speichern</button>
-</div>
+                <div class="image-upload">
+                  <input type="file" (change)="onFileSelected($event)" accept="image/*" />
+                  <button (click)="onUpload()">Bild hochladen</button>
+                </div>
+                -->
+              </div>
+            </p-tabpanel>
+  </p-tabpanels>

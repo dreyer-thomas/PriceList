@@ -4,20 +4,35 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppData, Article, PriceGroup } from '../pricegroup.model';
 import { AdminService } from './admin.service';
+import { Select } from 'primeng/select';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { TabsModule } from 'primeng/tabs';
+import { ButtonDirective } from 'primeng/button';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { DataViewModule } from 'primeng/dataview';
+import { FileUploadHandlerEvent, FileUploadModule, FileUpload} from 'primeng/fileupload';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, Select, TabsModule, ButtonDirective, ToggleSwitchModule, DataViewModule, FileUploadModule]
 })
 export class AdminComponent {
   appData: AppData = new AppData();
   private readonly apiUrl = '/api/preisgruppen';
 
-  selectedFile?: File;
+  // selectedFile?: File;
   previewUrl?: string;
-  images: string[] = [];
+  images: { name: string; file: string; url: string }[] = [];
+
+  activeTab: string = 'allgemein';
+
+  tabs = [
+    { label: 'Allgemein', value: 'allgemein' },
+    { label: 'Artikel', value: 'artikel' },
+    { label: 'Bilder', value: 'bilder' }
+  ];
 
   constructor(private service: AdminService) {
     this.load();
@@ -81,9 +96,10 @@ export class AdminComponent {
     this.appData.groups.splice(index, 1);
   }
 
-  onFileSelected(event: Event) {
-    const fileInput = event.target as HTMLInputElement;
-    const file = fileInput.files?.[0];
+  /*
+  onFileSelected(event: FileSelectEvent) {
+    const file = event.currentFiles[0];
+    console.log("File: "+ event.currentFiles[0].);
     if (file) {
       this.selectedFile = file;
 
@@ -94,33 +110,46 @@ export class AdminComponent {
       reader.readAsDataURL(file);
     }
   } 
+  */
 
-  onUpload() {
-    if (!this.selectedFile) return;
+    onUpload(file: File) {
+      const formData = new FormData();
+      formData.append('image', file);
 
-    const formData = new FormData();
-    formData.append('image', this.selectedFile);
+      fetch('/api/images', {
+        method: 'POST',
+        body: formData
+      }).then(response => {
+        if (response.ok) {
+          console.log('Upload erfolgreich');
+        } else {
+          console.error('Fehler beim Upload');
+        }
+      }).catch(err => {
+        console.error('Fehler beim Hochladen:', err);
+      });
+      this.loadImages();
+    }
 
-    fetch('/api/images', {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (response.ok) {
-        console.log('Upload erfolgreich');
-      } else {
-        console.error('Fehler beim Upload');
+    upload(event: FileUploadHandlerEvent, fileUpload: FileUpload)
+    {
+      console.log("upload: called");
+      for (let file of event.files) {
+        this.onUpload(file);
       }
-    }).catch(err => {
-      console.error('Fehler beim Hochladen:', err);
-    });
-    this.loadImages();
-  }
+      // Liste im UI leeren
+      fileUpload.clear();
+    }
 
   loadImages() {
     fetch('/api/images')
       .then(res => res.json())
       .then(data => {
-        this.images = data;
+        this.images = data.map((filename: string) => ({
+          name: filename,
+          file: filename,
+          url: '/images/' + filename
+        }));
       });
   }
 
@@ -148,6 +177,10 @@ export class AdminComponent {
     if (group.type === 'becher' && group.articles.length) {
       group.articles[0].name = group.title;
     }
+  }
+
+  getSelectedImage(): { name: string; url: string } | undefined {
+    return this.images.find(i => i.file === this.appData.appLogo);
   }
 
 }

@@ -10,6 +10,11 @@ import { LOCALE_ID } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import localeDe from '@angular/common/locales/de';
 
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeuix/themes/aura';
+
+
 registerLocaleData(localeDe);
 
 export const appConfig: ApplicationConfig = {
@@ -19,6 +24,12 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideHttpClient(),
     importProvidersFrom(FormsModule),
+    provideAnimationsAsync(),
+        providePrimeNG({
+            theme: {
+                preset: Aura
+            }
+        }),
     { provide: LOCALE_ID, useValue: 'de-DE' }
   ]
 };
