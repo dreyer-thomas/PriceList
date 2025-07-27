@@ -10,9 +10,8 @@
             </div>
         </p-accordion-header>
         <p-accordion-content class="pl-5">
-
             <!-- Gruppentyp -->
-            <div class="field w-full md:w-4 mb-2">
+            <div class="field w-full md:w-5 mb-2">
                 <div class="grid w-full align-items-center">
                     <div class="col-3">
                         <label for="type">Typ:</label>
@@ -33,7 +32,7 @@
                 </div>
             </div>
 
-            <div class="field w-full md:w-4 mb-2">
+            <div class="field w-full md:w-5 mb-2">
                 <div class="grid w-full">
                 <div class="col-3">
                     <label for="column">Name:</label>
@@ -44,7 +43,7 @@
                 </div>
             </div>
 
-            <div *ngIf="group.type === 'kugel'" class="field w-full md:w-4 mb-2">
+            <div *ngIf="group.type === 'kugel'" class="field w-full md:w-5 mb-2">
                 <div class="grid w-full align-items-center">
                     <div class="col-3">
                         <label for="column">Spalte:</label>
@@ -67,7 +66,7 @@
             <div *ngIf="group.type === 'kugel'">
 
                 <!-- Preis pro Kugel -->
-                <div class="field w-full md:w-4 mb-2">
+                <div class="field w-full md:w-5 mb-2">
                     <div class="grid w-full align-items-center">
                     <div class="col-3">
                         <label for="price">Kugelpreis:</label>
@@ -82,66 +81,26 @@
                     </div>
                 </div>
 
-                <div class="field w-full md:w-4">
+                <div class="field w-full md:w-5">
                     <label>Artikel:</label>
                 </div>
 
-                <!-- Artikel-Liste -->
-                <div class="field w-full md:w-4 mb-2" *ngFor="let article of group.articles; let j = index">
-                    <div class="grid w-full align-items-center">
-
-                        <!-- Sorte -->
-                        <div class="col-3">
-                            <input type="text" pInputText [(ngModel)]="article.name" [name]="'name-' + i + '-' + j" placeholder="Sorte" class="w-full" />
-                        </div>
-
-                        <!-- Bildauswahl -->
-                        <div class="col-5">
-                        <p-select
-                            [options]="images"
-                            class="py-1 leading-none w-full"
-                            size="small"
-                            [(ngModel)]="article.image"
-                            optionLabel="name"
-                            optionValue="file"
-                            placeholder="Bild auswählen"
-                            class="w-full small-select">
-                            <ng-template let-image #item>
-                                <div class="flex align-items-center gap-2">
-                                <img [src]="image.url" class="border-round w-1 h-1 border-round" />
-                                <span class="align-self-center">{{ image.name }}</span>
-                                </div>
-                            </ng-template>
-
-                            <ng-template let-image #selectedItem>
-                                <div class="flex align-items-center gap-2">
-                                <img [src]="image.url" class="rounded object-contain w-1 h-1 border-round"/>
-                                <span class="align-self-center">{{ image.name }}</span>
-                                </div>
-                            </ng-template>
-                        </p-select>
-                        </div>
-
-                        <!-- Aktiv-Switch + Löschen -->
-                        <div class="col-2 flex align-items-center">
-                            <p-toggle-switch [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" />
-                        </div>
-
-                        <div class="col-2 flex align-items-center justify-content-end">
-                            <button pButton icon="pi pi-trash" severity="danger" (click)="removeArticle.emit({ groupIndex: i, articleIndex: j })"></button>
-                        </div>
-
-                    </div>
-                    </div>
-
-                <!-- Neue Sorte -->
-                <div class="field w-full md:w-4 mb-2">
-                <button class="col-5" pButton label="Neue Sorte" icon="pi pi-plus" (click)="addArticle.emit(i)"></button>
+                <div class="field w-full md:w-5 mb-2">
+                    <app-article-item *ngFor="let article of group.articles; let j = index"
+                        [article]="article"
+                        [images]="images"
+                        [groupIndex]="i"
+                        [articleIndex]="j"
+                        (remove)="removeArticle.emit($event)">
+                    </app-article-item>
                 </div>
 
+                <div class="field w-full md:w-5 mb-2">
+                    <button class="col-5" pButton label="Neue Sorte" icon="pi pi-plus" (click)="addArticle.emit(i)"></button>
+                </div>
             </div>
 
-            <div *ngIf="group.type === 'becher'" class="field w-full md:w-4">
+            <div *ngIf="group.type === 'becher'" class="field w-full md:w-5">
                 <div class="grid w-full align-items-center">
 
                 <!-- Preis -->
@@ -202,9 +161,9 @@
                 </div>
             </div>
 
-                <div class="field w-full md:w-4 mb-2">
+            <div class="field w-full md:w-5 mb-2">
                 <button class="col-5" pButton icon="pi pi-trash" severity="danger" (click)="deleteGroup.emit(i)">Gruppe löschen</button>
-                </div>
+            </div>
         </p-accordion-content>
     </p-accordion-panel>
 </p-accordion>

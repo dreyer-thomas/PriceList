@@ -5,14 +5,16 @@ import { AppData, Image} from '../pricegroup.model';
 import { AccordionModule } from 'primeng/accordion';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ButtonDirective } from 'primeng/button';
-import { Select } from 'primeng/select';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
+import { ArticleItemComponent } from './article-item/article-item';
+import { Select } from 'primeng/select';
 
 @Component({
   selector: 'app-admin-articles',
   imports: [AccordionModule, ToggleSwitchModule, CommonModule, FormsModule,
-            Select, ButtonDirective, InputTextModule, TextareaModule
+            ButtonDirective, InputTextModule, TextareaModule, ArticleItemComponent,
+            Select
            ],
   templateUrl: './admin-articles.html',
   styleUrl: './admin-articles.css'
