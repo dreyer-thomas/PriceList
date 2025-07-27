@@ -13,38 +13,7 @@
   <p-tabpanels>
         <!-- Tab: Allgemein -->
         <p-tabpanel value="0">
-          <div class="app-settings-card">
-
-            <div class="form-row">
-              <label for="imageSelect">Bild auswählen:</label>
-              <p-select
-                [options]="images"
-                [(ngModel)]="appData.appLogo"
-                optionLabel="name"
-                optionValue="file"
-                placeholder="Bild auswählen"
-                class="w-full">
-                <ng-template let-image #item>
-                  <div class="flex align-items-center gap-2">
-                    <img [src]="image.url" class="border-round w-1 h-1 border-round" />
-                    <span class="align-self-center">{{ image.name }}</span>
-                  </div>
-                </ng-template>
-
-                <ng-template let-image #selectedItem>
-                  <div class="flex align-items-center gap-2">
-                    <img [src]="image.url" class="rounded object-contain w-1 h-1 border-round"/>
-                    <span class="align-self-center">{{ image.name }}</span>
-                  </div>
-                </ng-template>
-              </p-select>
-            </div>
-            <!-- Switch to hide prices -->
-            <div class="flex justify-between items-center w-full mb-2 gap-3">
-              <p-toggle-switch [(ngModel)]="appData.hidePrices"></p-toggle-switch>
-              <label for="hidePrices" class="w-1/2">Preise ausblenden</label>
-            </div>
-          </div>
+            <app-admin-general [images]="images" [appData]="appData"></app-admin-general>
         </p-tabpanel>
 
         <!-- Tab: Artikel -->
@@ -250,15 +219,6 @@
                           </textarea>
                         </div>
 
-                        <!-- Aktiv 
-                        <div class="col-3">
-                          <label for="activeSwitch-{{ i }}">Aktiv:</label>
-                        </div>
-                        <div class="col-9">
-                          <p-toggle-switch [(ngModel)]="group.articles[0].active" [name]="'active-' + i" inputId="activeSwitch-{{ i }}" />
-                        </div>
-                      -->
-
                       </div>
                     </div>
 
@@ -275,25 +235,10 @@
 
         <!-- Tab: Bilder -->
         <p-tabpanel value="2">
-          <div class="app-settings-card">
-
-            <p-data-view #dv [value]="images">
-              <ng-template #list let-items>
-                  <div *ngFor="let img of images; let first = first">
-                      <div class="flex align-items-center gap-2">
-                          <img class="col-4 w-2 h-2" [src]="img.url"/>
-                          <span class="col-6 align-self-center">{{ img.file }}</span>
-                          <button pButton (click)="deleteImage(img.file)" class="col-2" icon="pi pi-trash" severity="danger"></button>
-                      </div>
-                  </div>
-              </ng-template>
-            </p-data-view>
-            <p-fileupload #fileUpload
-                          mode="advanced" 
-                          chooseLabel="Datei laden" 
-                          chooseIcon="pi pi-upload" 
-                          customUpload="true" 
-                          (uploadHandler)="upload($event,fileUpload)" />
-          </div>
+          <app-admin-images
+                [images]="images"
+                (delete)="deleteImage($event)"
+                (upload)="upload($event)">
+          </app-admin-images>
         </p-tabpanel>
   </p-tabpanels>

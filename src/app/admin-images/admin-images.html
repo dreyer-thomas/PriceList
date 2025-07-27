@@ -1,0 +1,19 @@
+<div class="app-settings-card">
+    <p-data-view #dv [value]="images">
+        <ng-template #list let-items>
+            <div *ngFor="let img of images; let first = first">
+                <div class="flex align-items-center gap-2">
+                    <img class="col-4 w-2 h-2" [src]="img.url"/>
+                    <span class="col-6 align-self-center">{{ img.file }}</span>
+                    <button pButton (click)="delete.emit(img.file)" class="col-2" icon="pi pi-trash" severity="danger"></button>
+                </div>
+            </div>
+        </ng-template>
+    </p-data-view>
+    <p-fileupload #fileUpload
+                    mode="advanced" 
+                    chooseLabel="Datei laden" 
+                    chooseIcon="pi pi-upload" 
+                    customUpload="true" 
+                    (uploadHandler)="onUpload($event,fileUpload)" />
+</div>

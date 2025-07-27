@@ -17,7 +17,6 @@ export class Article {
 
 export class AppData {
   constructor(
-    public appLogo: string = '',
     public groups: PriceGroup[] = [],
     public hidePrices: boolean = false
   ) {}

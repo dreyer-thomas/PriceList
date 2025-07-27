@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppData, Article, PriceGroup } from '../pricegroup.model';
@@ -9,20 +8,21 @@ import { Select } from 'primeng/select';
 import { TabsModule } from 'primeng/tabs';
 import { ButtonDirective } from 'primeng/button';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
-import { DataViewModule } from 'primeng/dataview';
-import { FileUploadHandlerEvent, FileUploadModule, FileUpload} from 'primeng/fileupload';
 import { AccordionModule } from 'primeng/accordion';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { AdminGeneralComponent } from '../admin-general/admin-general';
+import { AdminImagesComponent } from '../admin-images/admin-images';
+import { FileUploadHandlerEvent, FileUpload } from 'primeng/fileupload';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
   imports: [CommonModule, FormsModule, Select, TabsModule, ButtonDirective, 
-            ToggleSwitchModule, DataViewModule, FileUploadModule,
-            AccordionModule, InputTextModule, TextareaModule, InputNumberModule
+            ToggleSwitchModule, AccordionModule, InputTextModule, TextareaModule, InputNumberModule,
+            AdminGeneralComponent, AdminImagesComponent
           ]
 })
 export class AdminComponent {
@@ -102,33 +102,6 @@ export class AdminComponent {
     this.appData.groups.splice(index, 1);
   }
 
-  onUpload(file: File) {
-    const formData = new FormData();
-    formData.append('image', file);
-
-    fetch('/api/images', {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (response.ok) {
-        console.log('Upload erfolgreich');
-      } else {
-        console.error('Fehler beim Upload');
-      }
-    }).catch(err => {
-      console.error('Fehler beim Hochladen:', err);
-    });
-    this.loadImages();
-  }
-
-  upload(event: FileUploadHandlerEvent, fileUpload: FileUpload)
-  {
-    for (let file of event.files) {
-      this.onUpload(file);
-    }
-    // Liste im UI leeren
-    fileUpload.clear();
-  }
 
   loadImages() {
     fetch('/api/images')
@@ -140,6 +113,25 @@ export class AdminComponent {
           url: '/images/' + filename
         }));
       });
+  }
+
+
+  upload(file: File) {
+    // Hier kommt jeder einzelne File aus dem emit an
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch('/api/images', {
+      method: 'POST',
+      body: formData
+    }).then(res => {
+      if (res.ok) {
+        console.log('Upload erfolgreich');
+        this.loadImages(); // ggf. reload
+      } else {
+        console.error('Fehler beim Upload');
+      }
+    }).catch(err => console.error('Fehler:', err));
   }
 
   deleteImage(filename: string) {
@@ -168,8 +160,5 @@ export class AdminComponent {
     }
   }
 
-  getSelectedImage(): { name: string; url: string } | undefined {
-    return this.images.find(i => i.file === this.appData.appLogo);
-  }
 
 }
