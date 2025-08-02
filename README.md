@@ -41,7 +41,7 @@ Die REST-API dient der WebUI zum Lesen und Speichern der Bilder und der Konfigur
 - `POST   /api/Preisgruppen` – Speichert eine neue Preiskonfiguration
 - `POST   /api/images` – Lädt ein neues Bild hoch
 - `GET    /api/images`- Lädt die Liste aller Bilder vom Server, nicht die Bilder selbst
-- `DELETE /api/images:filename` - Löscht ein Bild vom Server
+- `DELETE /api/images:filename` - Löscht ein Bild vom Server 
 
 ## WLAN Zugang
 
@@ -187,6 +187,55 @@ und so definiert:
 ```
 
 das startet den Chromium-Browser mit der lokalen Adresse für das ShopBoard. 
+
+# Bedienung
+
+## Shop-Board Sicht
+
+Diese Sicht erscheint bei der Angabe der URL auf Port 3000 (z.B. http://localhost:3000)
+
+Diese Sicht ist das Ziel, was die App verfolgt. Es sollen zwei Arten von Artikeln angeboten werden: Kugeleis und Eisbecher. Diese unterscheiden sich in der Darstellung
+Bei Kugeleis wird die KAtegorie (z.B. Milcheis) in einer farbigen Überschrift gezeigt und darunter der Preis je Kugel. Anschließend folgt als Aufzählung die einzelnen 
+Artikel der Kategorie. Damit stellt die Artikelgruppe eine Art Block dar. Es können weitere Blöcke folgen, wobei die Darsstellung zweispaltig ist. Der Aministrator hat
+so die Wahl ob die Gruppe links oder rechts erscheinen soll. 
+
+Bei den Eisbechern wird nur eine Spalte angezeigt. Es erscheint links ein Bild des Bechers rechts davon der Name des Eisbechers und darunter der Preis. Darunter folgt 
+dann eine Auflistung der Zutaten. 
+
+Sowohl Artikelgruppen (Kugeleis oder auch Becher) als auch einzelne Artikel können in der Administratorsicht einfach deaktiviert werden. Ebenfalls kann der Admin mit 
+einem Schalter die Anzeige der Preise deaktiveren und so eine Artikelanzeige ohne Preise erreichen.
+
+## Administratorsicht
+
+Diese Sicht erscheint bei der Angabe der URL auf Port 3000 mit dem Pfad /admin (z.B. http://localhost:3000/admin)
+
+Die Administratorsicht besittz drei Bereiche:
+* Allgemein
+* Artikel
+* Bilder
+
+### Allgemein
+
+Diese Sicht dient allgemeinen Einstellungen. Aktuell gibt es nur eine zum Ausblenden der Preise. Ist diese aktiviert, dann verschwinden die Preise im ShopBoard.
+
+### Artikel
+
+Diese Sicht zeigt eine Liste der bereits konfigurierten Artikelgruppen. Die Elemente können zum Editieren aufgeklappt werden oder zur Besseren Übersicht wieder zugeklappt. 
+Am rechten Rand erscheint auch ein Schalter, mit dem diese Artikelgruppe aus dem Shopboard ausgeblendet wird. Zur Ansicht muss der Schalter aktiv sein. Der Typ der Artikelgruppe 
+wird mit einem Symbol auf der linken Seite angezeigt. Ein Kreis bedeutet Kugeleis, ein Pokal steht für Becher.
+
+Öffnet man eine Gruppe, kann diese editiert werden. Die Auswahlen sind:
+
+**Typ:** Diese Einstellung legt den Typ der Artikelgruppe fest, wobei Kugeleis und Becher gewählt werden können. Entsprechend der Auswahl verändert sich der Bereich darunter etwas.
+
+**Name:** Da wird der Name des Bechers oder der Artikelgruppe bei Kugeleis eingegeben.
+
+**Spalte (nur Kugeleis):** Hier kann ausgewählt werden, ob die Artikelgruppe links oder rechts angezeigt wird.
+
+**Kugelpreis (nur Kugeleis):** Gib hier den Preis für eine Kugel Eis ein. Der Preis erscheint später direkt unter dem Gruppennamen.
+
+**Artikel (nur Kugeleis):** Gib hier die Auflistung der Eissorten für das Kugeleis an. Diese werden dann als Liste unter der Kategorie und dem Preis aufgeführt.
+
 
 # Source Code
 

@@ -6,6 +6,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { ButtonDirective } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { TextareaModule } from 'primeng/textarea';
 import { ArticleItemComponent } from './article-item/article-item';
 import { Select } from 'primeng/select';
@@ -14,7 +15,7 @@ import { Select } from 'primeng/select';
   selector: 'app-admin-articles',
   imports: [AccordionModule, ToggleSwitchModule, CommonModule, FormsModule,
             ButtonDirective, InputTextModule, TextareaModule, ArticleItemComponent,
-            Select
+            Select, InputNumberModule
            ],
   templateUrl: './admin-articles.html',
   styleUrl: './admin-articles.css'
