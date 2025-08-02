@@ -3,7 +3,6 @@ import { Article } from '../../pricegroup.model';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Select } from 'primeng/select';
 import { ButtonDirective } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { TextareaModule } from 'primeng/textarea';
@@ -12,7 +11,7 @@ import { TextareaModule } from 'primeng/textarea';
   selector: 'app-article-item',
   templateUrl: './article-item.html',
   styleUrls: ['./article-item.css'],
-  imports: [ToggleSwitchModule,CommonModule, FormsModule, Select,
+  imports: [ToggleSwitchModule,CommonModule, FormsModule, 
             ButtonDirective, InputTextModule, TextareaModule
   ]
 })
