@@ -1,26 +1,29 @@
-export class Article {
-    constructor(
-    public name: string = '',
-    public price: number = 0,
-    public active: boolean = true
-  ) {}
+export class PriceGroup {
+  title = '';
+  active = true;
+  type: 'kugel' | 'becher' = 'kugel'; // NEU
+  price: number = 0; // Nur für Typ 'kugel'
+  articles: Article[] = [];
+  column: 'left' | 'right' = 'left';
 }
 
-export class PriceGroup {
-  constructor(
-    public title: string = '',
-    public image: string = '',
-    public active: boolean = true,
-    public articles: Article[] = []
-  ) {}
+export class Article {
+  name = '';
+  price = 0;
+  image = '';
+  ingredients = '';
+  active = true;
 }
 
 export class AppData {
   constructor(
-    public appTitle: string = '',
-    public appLogo: string = '',
     public groups: PriceGroup[] = [],
-    public zoom: number = 0.8,
-    public impressum: string = '',
+    public hidePrices: boolean = false
   ) {}
+}
+
+export interface Image {
+  file: string;
+  name: string;
+  url: string;
 }

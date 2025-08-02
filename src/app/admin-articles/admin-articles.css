@@ -1,0 +1,17 @@
+.p-accordion .p-accordionheader {
+  background-color: #f0f4f8;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.p-accordion .p-accordioncontent {
+  background-color: #d0d7de;
+  border-top: 1px solid #d0d7de;
+}
+
+.p-accordion .p-accordionpanel {
+  margin-bottom: 1rem;
+  border: 1px solid #d0d7de;
+  border-radius: 4px;
+  overflow: hidden;
+}

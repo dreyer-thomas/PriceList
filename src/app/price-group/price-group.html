@@ -1,12 +1,31 @@
-
-<div class="price-group-header">
-  <img [src]="getImageUrl(image)" alt="Bild der Warengruppe" class="group-image" />
-  <h2 class="group-title">{{ title }}</h2>
+<!-- KUGELEIS -->
+<div *ngIf="type === 'kugel' && active" class="kugel-block">
+  <h2 class="group-title" [ngClass]="titleColorClass">{{ title }}</h2>
+  <div class="group-price" *ngIf="!hidePrices">
+    <strong>Preis pro Kugel:</strong> {{ price | currency:'EUR' }}
+  </div>
+  <ul class="article-list">
+    <li *ngFor="let article of visibleArticles">
+      <span>{{ article.name }}</span>
+    </li>
+  </ul>
 </div>
 
-<ul class="article-list">
-  <li *ngFor="let article of visibleArticles">
-    <span>{{ article.name }}</span>
-    <span>{{ article.price | currency:'EUR' }}</span>
-  </li>
-</ul>
+<!-- BECHER -->
+<div *ngIf="type === 'becher' && active && isBecherActive" class="becher-block">
+  <div class="becher-layout">
+    <img *ngIf="articles[0]?.image"
+         [src]="getImageUrl(articles[0].image)"
+         alt="{{ title }}"
+         class="becher-image" />
+    <div class="becher-info">
+      <div class="becher-title">{{ title }}</div>
+      <div class="becher-price" *ngIf="!hidePrices">
+        {{ articles[0].price | currency:'EUR':'symbol':'1.2-2' }}
+      </div>
+      <div class="becher-ingredients" *ngIf="articles[0].ingredients">
+        {{ articles[0].ingredients }}
+      </div>
+    </div>
+  </div>
+</div>

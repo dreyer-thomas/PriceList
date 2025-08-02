@@ -1,0 +1,55 @@
+<div class="grid w-full align-items-center">
+  <!-- Sorte -->
+  <div class="col-3">
+    <input
+      type="text"
+      pInputText
+      [(ngModel)]="article.name"
+      [name]="'name-' + groupIndex + '-' + articleIndex"
+      placeholder="Sorte"
+      class="w-full" />
+  </div>
+
+  <!-- Bildauswahl -->
+  <div class="col-5">
+    <p-select
+      [options]="images"
+      class="py-1 leading-none w-full"
+      size="small"
+      [(ngModel)]="article.image"
+      optionLabel="name"
+      optionValue="file"
+      placeholder="Bild auswählen"
+      class="w-full small-select">
+      <ng-template let-image #item>
+        <div class="flex align-items-center gap-2">
+          <img [src]="image.url" class="border-round w-1 h-1 border-round" />
+          <span class="align-self-center">{{ image.name }}</span>
+        </div>
+      </ng-template>
+      <ng-template let-image #selectedItem>
+        <div class="flex align-items-center gap-2">
+          <img [src]="image.url" class="rounded object-contain w-1 h-1 border-round"/>
+          <span class="align-self-center">{{ image.name }}</span>
+        </div>
+      </ng-template>
+    </p-select>
+  </div>
+
+  <!-- Aktiv-Switch -->
+  <div class="col-2 flex align-items-center">
+    <p-toggle-switch
+      [(ngModel)]="article.active"
+      [name]="'active-' + groupIndex + '-' + articleIndex" />
+  </div>
+
+  <!-- Löschen -->
+  <div class="col-2 flex align-items-center justify-content-end">
+    <button
+      pButton
+      icon="pi pi-trash"
+      severity="danger"
+      (click)="onRemove()">
+    </button>
+  </div>
+</div>

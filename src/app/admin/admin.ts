@@ -1,23 +1,44 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppData, Article, PriceGroup } from '../pricegroup.model';
 import { AdminService } from './admin.service';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { TabsModule } from 'primeng/tabs';
+import { ButtonDirective } from 'primeng/button';
+import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { AccordionModule } from 'primeng/accordion';
+import { InputTextModule } from 'primeng/inputtext';
+import { TextareaModule } from 'primeng/textarea';
+import { InputNumberModule } from 'primeng/inputnumber';
+import { AdminGeneralComponent } from '../admin-general/admin-general';
+import { AdminImagesComponent } from '../admin-images/admin-images';
+import { AdminArticlesComponent } from '../admin-articles/admin-articles';
+
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.html',
   styleUrls: ['./admin.css'],
-  imports: [CommonModule, FormsModule]
+  imports: [CommonModule, FormsModule, TabsModule, ButtonDirective, 
+            ToggleSwitchModule, AccordionModule, InputTextModule, TextareaModule, InputNumberModule,
+            AdminGeneralComponent, AdminImagesComponent, AdminArticlesComponent
+          ]
 })
 export class AdminComponent {
   appData: AppData = new AppData();
   private readonly apiUrl = '/api/preisgruppen';
 
-  selectedFile?: File;
   previewUrl?: string;
-  images: string[] = [];
+  images: { name: string; file: string; url: string }[] = [];
+
+  activeTab: string = 'allgemein';
+
+  tabs = [
+    { label: 'Allgemein', value: 'allgemein' },
+    { label: 'Artikel', value: 'artikel' },
+    { label: 'Bilder', value: 'bilder' }
+  ];
 
   constructor(private service: AdminService) {
     this.load();
@@ -30,6 +51,30 @@ export class AdminComponent {
   load() {
     this.service.getPriceGroups().subscribe((data) => {
       this.appData = data;
+
+      this.appData.groups.forEach(group => {
+        if (!group.articles) {
+          group.articles = [];
+        }
+
+        // echte Article-Instanzen herstellen
+        group.articles = group.articles.map(a => {
+          const article = new Article();
+          Object.assign(article, a);
+          return article;
+        });
+
+        // Bechergruppe absichern
+        if (group.type === 'becher') {
+          if (group.articles.length === 0) {
+            group.articles = [new Article()];
+          }
+
+          // Preis
+          const parsedPrice = Number(group.articles[0].price);
+          group.articles[0].price = isNaN(parsedPrice) ? 0 : parsedPrice;
+        }
+      });
     });
   }
 
@@ -45,8 +90,8 @@ export class AdminComponent {
       group.articles.push(new Article());
   }
 
-  removeArticle(groupIndex: number, articleIndex: number) {
-    this.appData.groups[groupIndex].articles.splice(articleIndex, 1);
+  removeArticle(event: { groupIndex: number; articleIndex: number }) {
+    this.appData.groups[event.groupIndex].articles.splice(event.articleIndex, 1);
   }
 
   addGroup() {
@@ -57,47 +102,36 @@ export class AdminComponent {
     this.appData.groups.splice(index, 1);
   }
 
-  onFileSelected(event: Event) {
-    const fileInput = event.target as HTMLInputElement;
-    const file = fileInput.files?.[0];
-    if (file) {
-      this.selectedFile = file;
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  } 
-
-  onUpload() {
-    if (!this.selectedFile) return;
-
-    const formData = new FormData();
-    formData.append('image', this.selectedFile);
-
-    fetch('/api/images', {
-      method: 'POST',
-      body: formData
-    }).then(response => {
-      if (response.ok) {
-        console.log('Upload erfolgreich');
-      } else {
-        console.error('Fehler beim Upload');
-      }
-    }).catch(err => {
-      console.error('Fehler beim Hochladen:', err);
-    });
-    this.loadImages();
-  }
 
   loadImages() {
     fetch('/api/images')
       .then(res => res.json())
       .then(data => {
-        this.images = data;
+        this.images = data.map((filename: string) => ({
+          name: filename,
+          file: filename,
+          url: '/images/' + filename
+        }));
       });
+  }
+
+
+  upload(file: File) {
+    // Hier kommt jeder einzelne File aus dem emit an
+    const formData = new FormData();
+    formData.append('image', file);
+
+    fetch('/api/images', {
+      method: 'POST',
+      body: formData
+    }).then(res => {
+      if (res.ok) {
+        console.log('Upload erfolgreich');
+        this.loadImages(); // ggf. reload
+      } else {
+        console.error('Fehler beim Upload');
+      }
+    }).catch(err => console.error('Fehler:', err));
   }
 
   deleteImage(filename: string) {
@@ -107,5 +141,24 @@ export class AdminComponent {
       this.loadImages(); // Liste neu laden
     });
   }
+
+  onGroupTypeChanged(group: PriceGroup) {
+    if (group.type === 'becher') {
+      if (!group.articles || group.articles.length === 0) {
+        group.articles = [new Article()];
+      }
+      // Nur setzen, wenn leer
+      if (!group.articles[0].name) {
+        group.articles[0].name = group.title;
+      }
+    }
+  }
+
+  onGroupTitleChanged(group: PriceGroup) {
+    if (group.type === 'becher' && group.articles.length) {
+      group.articles[0].name = group.title;
+    }
+  }
+
 
 }

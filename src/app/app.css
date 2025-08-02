@@ -1,36 +1,45 @@
-:host {
+html, body {
+  height: 100%;
+  margin: 0;
+  overflow: hidden; /* verhindert Scrollen */
+}
+
+main, app-root, .content-wrapper {
+  height: 100%;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
-  background-color: #f8f7dc;
 }
 
 .main-content {
   flex: 1;
-  display: flex;
-  justify-content: center;   /* horizontal zentriert */
-  align-items: center;       /* vertikal zentriert */
-  padding: 2rem;
+  overflow-y: auto;
+  min-height: 0; /* wichtig bei flex */
 }
 
-.content-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 2rem;
-  max-width: 1000px;
+.content-wrapper {
   width: 100%;
-}
-
-.grid-item {
-  flex: 1 1 calc(50% - 2rem);
-  max-width: 500px;
-  min-width: 280px;
+  padding: 0 3rem;
   box-sizing: border-box;
 }
 
-/* Optional: Footer clean halten */
-.app-footer {
-  border: none;
-  box-shadow: none;
+.column-layout {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  flex-wrap: nowrap;
+}
+
+.column {
+  width: 48%;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.becher-block {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  margin-top: 4rem;
 }

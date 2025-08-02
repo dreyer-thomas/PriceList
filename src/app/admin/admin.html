@@ -1,72 +1,39 @@
-
-<div class="app-settings-card">
-  <h3>Allgemeine Einstellungen</h3>
-  <div class="form-row">
-    <label for="appTitle">Titel der Seite:</label>
-    <input type="text" id="appTitle" [(ngModel)]="appData.appTitle" />
-  </div>
-  <div class="form-row">
-    <label for="appLogo">Logo-Dateiname:</label>
-    <input type="text" id="appLogo" [(ngModel)]="appData.appLogo" />
-  </div>
-  <div class="form-row">
-    <label for="zoom">Zoom:</label>
-    <input type="number" id="appZoom" [(ngModel)]="appData.zoom" />
-  </div>
-  <div class="form-row">
-    <label for="Impressum">Impressum:</label>
-    <input type="text" id="appImpressum" [(ngModel)]="appData.impressum" />
-  </div>
-  <div class="logo-preview" *ngIf="appData.appLogo">
-    <p>Logo-Vorschau:</p>
-    <img [src]="'/images/' + appData.appLogo" alt="Logo" />
-  </div>
-</div>
-
-<div class="app-settings-card">
-  <h3>Artikelverwaltung</h3>
-  <div *ngFor="let group of appData.groups; let i = index" class="price-group-editor">
-    <input type="text" [(ngModel)]="group.title" placeholder="Name der Preisgruppe" />
-    <input type="text" [(ngModel)]="group.image" placeholder="Bilddatei" />
-    <label>
-        <input type="checkbox" [(ngModel)]="group.active" />Aktiv
-    </label>
-
-    <button (click)="deleteGroup(i)">Gruppe löschen</button>
-
-    <div *ngFor="let article of group.articles; let j = index">
-      <form class="article-form">
-        <input type="text" [(ngModel)]="article.name" [name]="'name-' + i + '-' + j" placeholder="Artikelname" />
-        <input type="number" [(ngModel)]="article.price" [name]="'price-' + i + '-' + j" placeholder="Preis" />
-
-        <label>
-          <input type="checkbox" [(ngModel)]="article.active" [name]="'active-' + i + '-' + j" aria-label="Artikel aktivieren/deaktivieren" />
-        </label>
-
-        <button class="delete" (click)="removeArticle(i, j)"><i class="fa fa-trash">Löschen</i></button>
-     </form>
+<!-- Tabstruktur -->
+<p-tabs value="0">
+  <p-tablist>
+    <p-tab value="0">Allgemein</p-tab>
+    <p-tab value="1">Artikel</p-tab>
+    <p-tab value="2">Bilder</p-tab>
+    <div class="flex justify-between items-center mb-4">
+      <button pButton icon="pi pi-save" label="Speichern" (click)="save()"></button>
     </div>
-      <button (click)="addArticle(i)">Neuer Artikel</button>
-    </div>
-    <button (click)="addGroup()">Neue Preisgruppe</button>
-  </div>
+  </p-tablist>
+  <p-tabpanels>
+        <!-- Tab: Allgemein -->
+        <p-tabpanel value="0">
+            <app-admin-general [images]="images" [appData]="appData"></app-admin-general>
+        </p-tabpanel>
 
-<div class="app-settings-card">
-  <h3>Hochgeladene Bilder</h3>
-  <div class="image-list" *ngIf="images.length">
-    <div *ngFor="let img of images" class="image-entry">
-      <img [src]="'/images/' + img" [alt]="img" class="preview-image" />
-      <span>{{ img }}</span>
-      <button (click)="deleteImage(img)">Löschen</button>
-    </div>
-  </div>
-  <div class="image-upload">
-    <input type="file" (change)="onFileSelected($event)" accept="image/*" />
-    <button (click)="onUpload()">Bild hochladen</button>
-  </div>
-</div>
+        <!-- Tab: Artikel -->
+        <p-tabpanel value="1">
+          <app-admin-articles
+            [appData]="appData"
+            [images]="images"
+            (addGroup)="addGroup()"
+            (removeArticle)="removeArticle($event)"
+            (addArticle)="addArticle($event)"
+            (deleteGroup)="deleteGroup($event)">
+          </app-admin-articles>
+          <button pButton (click)="addGroup()">Neue Preisgruppe</button>        
+        </p-tabpanel>
 
-<div class="app-settings-card">
-  <h3>Konfiguration speichern</h3>
-  <button (click)="save()">Speichern</button>
-</div>
+        <!-- Tab: Bilder -->
+        <p-tabpanel value="2">
+          <app-admin-images
+                [images]="images"
+                (delete)="deleteImage($event)"
+                (upload)="upload($event)">
+          </app-admin-images>
+        </p-tabpanel>
+
+  </p-tabpanels>

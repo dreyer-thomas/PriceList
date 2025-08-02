@@ -16,3 +16,4 @@ app-root {
   flex-direction: column;
   min-height: 100dvh; /* oder 100vh, dvh ist robuster bei Mobile */
 }
+

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PriceGroup } from '../pricegroup.model';
+import { AdminArticles } from './admin-articles';
 
-describe('PriceGroup', () => {
-  let component: PriceGroup;
-  let fixture: ComponentFixture<PriceGroup>;
+describe('AdminArticles', () => {
+  let component: AdminArticles;
+  let fixture: ComponentFixture<AdminArticles>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PriceGroup]
+      imports: [AdminArticles]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(PriceGroup);
+    fixture = TestBed.createComponent(AdminArticles);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
