@@ -34,6 +34,7 @@ export class App implements OnInit {
         })
           ).subscribe((data) => {
             this.appData.hidePrices = data.hidePrices;
+            this.appData.hideDescription = data.hideDescription;
             this.appData.groups = data.groups.filter(group => group.active !== false);
           });
       }
@@ -42,11 +43,13 @@ export class App implements OnInit {
         this.service.getPriceGroups().subscribe((data) => {
             const oldJson = JSON.stringify({
               hidePrices: this.appData.hidePrices,
+              hideDescription: this.appData.hideDescription,
               groups: this.appData.groups
             });
 
             const newJson = JSON.stringify({
               hidePrices: data.hidePrices,
+              hideDescription: this.appData.hideDescription,
               groups: data.groups
             });
 

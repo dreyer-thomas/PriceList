@@ -13,12 +13,14 @@ export class Article {
   image = '';
   ingredients = '';
   active = true;
+  description = '';
 }
 
 export class AppData {
   constructor(
     public groups: PriceGroup[] = [],
-    public hidePrices: boolean = false
+    public hidePrices: boolean = false,
+    public hideDescription: boolean = false
   ) {}
 }
 
