@@ -78,3 +78,8 @@
 .color-purple {
   color: #6a1b9a;
 }
+
+.article-description {
+  font-size: 0.6em;
+  color: #666;
+}
