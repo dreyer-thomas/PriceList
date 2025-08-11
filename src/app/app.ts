@@ -7,10 +7,11 @@ import { AppData } from './pricegroup.model'
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { PriceGroup } from './pricegroup.model';
+import { BottomText } from "./bottom-text/bottom-text";
 
 @Component({
   selector: 'app-root',
-  imports: [CommonModule, PriceGroupComponent],
+  imports: [CommonModule, PriceGroupComponent, BottomText],
   templateUrl: './app.html',
   styleUrl: './app.css',
   standalone: true
@@ -35,6 +36,7 @@ export class App implements OnInit {
           ).subscribe((data) => {
             this.appData.hidePrices = data.hidePrices;
             this.appData.hideDescription = data.hideDescription;
+            this.appData.footerText = data.footerText;
             this.appData.groups = data.groups.filter(group => group.active !== false);
           });
       }
@@ -44,18 +46,21 @@ export class App implements OnInit {
             const oldJson = JSON.stringify({
               hidePrices: this.appData.hidePrices,
               hideDescription: this.appData.hideDescription,
+              footerText: this.appData.footerText,
               groups: this.appData.groups
             });
 
             const newJson = JSON.stringify({
               hidePrices: data.hidePrices,
               hideDescription: this.appData.hideDescription,
+              footerText: this.appData.footerText,
               groups: data.groups
             });
 
             if (oldJson !== newJson) {
               console.log('Änderung erkannt, Daten werden übernommen');
               this.appData = data;
+              this.appData.footerText = data.footerText;
               this.appData.groups = data.groups.filter(g => g.active !== false);
             }
         });
