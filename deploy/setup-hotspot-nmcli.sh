@@ -7,10 +7,12 @@ ENV_FILE="/etc/default/hotspot"
 source "$ENV_FILE"
 
 # Pflichtvariablen prüfen (keine Defaults!)
-for v in SSID PSK WIFI_COUNTRY WLAN_IF GATEWAY_IP; do
+for v in SSID PSK WIFI_COUNTRY WLAN_IF GATEWAY_IP HIDDEN BAND CHANNEL; do
   [[ -n "${!v:-}" ]] || { echo "FEHLER: Variable $v ist nicht gesetzt in $ENV_FILE"; exit 1; }
 done
 [[ ${#PSK} -ge 8 && ${#PSK} -le 63 ]] || { echo "FEHLER: PSK muss 8..63 Zeichen haben"; exit 1; }
+[[ "$HIDDEN" =~ ^(yes|no)$ ]] || { echo "FEHLER: HIDDEN muss 'yes' oder 'no' sein"; exit 1; }
+[[ "$BAND" =~ ^(bg|a)$ ]] || { echo "FEHLER: BAND muss 'bg' oder 'a' sein"; exit 1; }
 
 # Tools sicherstellen
 if ! command -v nmcli >/dev/null 2>&1; then
@@ -21,7 +23,7 @@ apt-get install -y rfkill iw || true
 
 # Regdom/Land setzen (persistent + runtime)
 WCONF="/etc/wpa_supplicant/wpa_supplicant.conf"
-grep -q '^country=' "$WCONF" 2>/dev/null && sed -i "s/^country=.*/country=$WIFI_COUNTRY/" "$WCONF" || echo "country=$WIFI_COUNTRY" >> "$WCONF"
+grep -q '^country=' "$WCONF" 2>/dev/null && sed -i "s/^country=.*/country=$WIFI_COUNTRY/" "$WCONF" || echo "country=$WIFI_COUNTRY" | tee -a "$WCONF" >/dev/null
 iw reg set "$WIFI_COUNTRY" 2>/dev/null || true
 rfkill unblock all || true
 
@@ -36,7 +38,7 @@ preflight_wifi() {
   systemctl restart NetworkManager
 
   # AP-Unterstützung prüfen
-  if ! iw list | sed -n '/Supported interface modes/,+10p' | grep -q '\bAP\b'; then
+  if ! iw list | sed -n '/Supported interface modes/,+12p' | grep -q '\bAP\b'; then
     echo "FEHLER: WLAN-Adapter unterstützt keinen AP-Modus."; exit 1
   fi
 
@@ -55,24 +57,29 @@ preflight_wifi "$WLAN_IF"
 echo "==> Entferne ggf. alte Verbindung: $CON_NAME"
 nmcli -t -f NAME connection show | grep -qx "$CON_NAME" && nmcli connection delete "$CON_NAME" || true
 
-echo "==> Lege WPA2-Only Hotspot an (hidden)"
+echo "==> Lege Hotspot an (WPA2-Only, $([ "$HIDDEN" = "yes" ] && echo hidden || echo sichtbar))"
 nmcli dev set "$WLAN_IF" managed yes || true
 nmcli connection add type wifi ifname "$WLAN_IF" con-name "$CON_NAME" autoconnect yes ssid "$SSID"
 
-# WPA2-PSK EXPLIZIT erzwingen (keine SAE/WPA3)
+# *** WPA2-ONLY erzwingen: RSN + AES/CCMP, KEIN WPA1, KEIN SAE/WPA3, PMF aus ***
 nmcli connection modify "$CON_NAME" \
   802-11-wireless.mode ap \
-  802-11-wireless.hidden yes \
-  802-11-wireless.band "${BAND:-bg}" \
+  802-11-wireless.hidden "$HIDDEN" \
+  802-11-wireless.band "$BAND" \
   ipv4.method shared \
   ipv6.method ignore \
   wifi-sec.key-mgmt wpa-psk \
-  wifi-sec.psk "$PSK"
+  wifi-sec.proto rsn \
+  wifi-sec.pairwise ccmp \
+  wifi-sec.group ccmp \
+  802-11-wireless-security.pmf 0
 
-# Optional Kanal setzen
-[[ -n "${CHANNEL:-}" ]] && nmcli connection modify "$CON_NAME" 802-11-wireless.channel "$CHANNEL"
+# Kanal setzen (leer = Auto; sonst Zahl)
+if [[ -n "$CHANNEL" ]]; then
+  nmcli connection modify "$CON_NAME" 802-11-wireless.channel "$CHANNEL"
+fi
 
-# Feste AP-IP
+# Feste AP-IP und Interface-Bindung
 nmcli connection modify "$CON_NAME" connection.interface-name "$WLAN_IF"
 nmcli connection modify "$CON_NAME" ipv4.addresses "${GATEWAY_IP}/24"
 
@@ -87,12 +94,12 @@ scan_out=$(iw dev "$WLAN_IF" scan 2>/dev/null | awk '/SSID: /{ssid=$0} /RSN:/,0 
 echo "$scan_out" | sed -n "/SSID: ${SSID}$/,/^$/p" | sed 's/^\s\+//'
 
 if echo "$scan_out" | sed -n "/SSID: ${SSID}$/,/^$/p" | grep -qi '\bSAE\b'; then
-  echo "WARNUNG: SAE/WPA3 im Beacon entdeckt – das sollte NICHT der Fall sein."
+  echo "WARNUNG: SAE/WPA3 im Beacon entdeckt – das sollte NICHT der Fall sein (Treiber/NM/hostapd mischen WPA3 ein)."
 else
-  echo "OK: Beacon enthält KEIN SAE – Hotspot ist WPA2-Only."
+  echo "OK: Beacon enthält KEIN SAE – Hotspot ist WPA2-Only (RSN/CCMP)."
 fi
 
 echo "==> Fertig."
-echo "    SSID (hidden): $SSID"
+echo "    SSID (hidden=${HIDDEN}): $SSID"
 echo "    PSK          : $PSK"
 echo "    AP-IP        : $GATEWAY_IP/24"
