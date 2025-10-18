@@ -1,7 +1,11 @@
+# Pflichtwerte
 SSID="ShopBoard-1"
 PSK="SB_270177"            # 8..63 Zeichen
 WIFI_COUNTRY="DE"          # WLAN-Regdom
 WLAN_IF="wlan0"            # WLAN-Interface
 GATEWAY_IP="10.42.0.1"     # Hotspot-IP (NetworkManager Shared)
-BAND="bg"                  # "bg" (2.4 GHz) oder "a" (5 GHz)
-CHANNEL=                   # optional: Kanal (leer lassen für Auto)
+
+# Steuerung
+HIDDEN="no"
+BAND="bg"
+CHANNEL="6"
