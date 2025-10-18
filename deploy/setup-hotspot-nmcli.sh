@@ -2,85 +2,96 @@
 set -euo pipefail
 
 ENV_FILE="/etc/default/hotspot"
+[[ -f "$ENV_FILE" ]] && source "$ENV_FILE" || { echo "FEHLER: $ENV_FILE fehlt"; exit 1; }
 
-require_file() {
-  [[ -f "$1" ]] || { echo "FEHLER: $1 nicht gefunden."; exit 1; }
-}
-
-require_var() {
-  local name="$1"
-  [[ -n "${!name:-}" ]] || { echo "FEHLER: Variable $name ist nicht gesetzt (in $ENV_FILE)."; exit 1; }
-}
-
-echo "==> Lese $ENV_FILE ..."
-require_file "$ENV_FILE"
-# shellcheck disable=SC1090
-source "$ENV_FILE"
-
-# Pflicht-Variablen prüfen (keine Defaults!)
+# Pflichtvariablen (keine Defaults!)
 for v in SSID PSK WIFI_COUNTRY WLAN_IF GATEWAY_IP; do
-  require_var "$v"
+  [[ -n "${!v:-}" ]] || { echo "FEHLER: $v nicht gesetzt in $ENV_FILE"; exit 1; }
 done
+: "${BAND:=bg}"        # optional
+: "${CHANNEL:=}"       # optional
 
-# Basiskontrollen
-if [[ ${#PSK} -lt 8 || ${#PSK} -gt 63 ]]; then
-  echo "FEHLER: PSK muss 8..63 Zeichen haben."; exit 1
-fi
+[[ ${#PSK} -ge 8 && ${#PSK} -le 63 ]] || { echo "FEHLER: PSK 8..63 Zeichen"; exit 1; }
+
+# Tools sicherstellen
 if ! command -v nmcli >/dev/null 2>&1; then
-  echo "==> Installiere NetworkManager ..."
   apt-get update -y
   apt-get install -y network-manager
 fi
+apt-get install -y rfkill iw || true
 
-echo "==> Setze WLAN-Regdom/Land auf $WIFI_COUNTRY ..."
+# Country/Regdom setzen
 WCONF="/etc/wpa_supplicant/wpa_supplicant.conf"
-if grep -q '^country=' "$WCONF" 2>/dev/null; then
-  sed -i "s/^country=.*/country=$WIFI_COUNTRY/" "$WCONF"
-else
-  echo "country=$WIFI_COUNTRY" >> "$WCONF"
-fi
-command -v iw >/dev/null 2>&1 && iw reg set "$WIFI_COUNTRY" || true
-rfkill unblock all || true
+grep -q '^country=' "$WCONF" 2>/dev/null && sed -i "s/^country=.*/country=$WIFI_COUNTRY/" "$WCONF" || echo "country=$WIFI_COUNTRY" >> "$WCONF"
+
+preflight_wifi() {
+  local ifc="$1"
+  echo "==> Preflight für $ifc (unavailable fixen)"
+
+  # Blockaden lösen & Radio an
+  rfkill unblock all || true
+  nmcli radio wifi on || true
+
+  # Von NM managen lassen, Interface hoch
+  nmcli dev set "$ifc" managed yes || true
+  ip link set "$ifc" up || true
+
+  # evtl. konkurrierende wpa_supplicant-Dienste stoppen (NM startet selbst)
+  systemctl stop "wpa_supplicant@$ifc.service" 2>/dev/null || true
+  systemctl stop wpa_supplicant.service 2>/dev/null || true
+
+  # Regdom zur Laufzeit setzen
+  iw reg set "$WIFI_COUNTRY" 2>/dev/null || true
+
+  # Einmal NetworkManager neu starten
+  systemctl restart NetworkManager
+
+  # Prüfen, ob Adapter AP-Mode kann
+  if ! iw list | sed -n '/Supported interface modes/,+10p' | grep -q '\bAP\b'; then
+    echo "FEHLER: Adapter unterstützt keinen AP-Mode."; exit 1
+  fi
+
+  # Warten, bis der State „disconnected/connected“ statt „unavailable/unmanaged“ ist
+  for _ in $(seq 1 30); do
+    state=$(nmcli -t -f DEVICE,STATE device status | awk -F: '$1=="'"$ifc"'"{print $2}')
+    [[ "$state" == "disconnected" || "$state" == "connected" ]] && return 0
+    sleep 1
+  done
+
+  echo "FEHLER: $ifc bleibt unavailable. Prüfe Treiber/Firmware."
+  exit 1
+}
 
 CON_NAME="hotspot-${WLAN_IF}"
 
-echo "==> Entferne ggf. alte Verbindung: $CON_NAME"
+# Preflight ausführen (macht wlanX verfügbar)
+preflight_wifi "$WLAN_IF"
+
+echo "==> Alte Verbindung entfernen (falls vorhanden): $CON_NAME"
 nmcli -t -f NAME connection show | grep -qx "$CON_NAME" && nmcli connection delete "$CON_NAME" || true
 
-echo "==> Lege Hotspot-Verbindung neu an ..."
+echo "==> Neue Hotspot-Verbindung anlegen"
 nmcli dev set "$WLAN_IF" managed yes || true
 nmcli connection add type wifi ifname "$WLAN_IF" con-name "$CON_NAME" autoconnect yes ssid "$SSID"
 
-# Verbindung an das exakte Interface binden:
-nmcli connection modify "$CON_NAME" connection.interface-name "$WLAN_IF"
-
-# Beim Hochfahren explizit das Interface nennen:
-nmcli connection up "$CON_NAME" ifname "$WLAN_IF"
-
-echo "==> Konfiguriere Eigenschaften ..."
+echo "==> Parameter setzen"
 nmcli connection modify "$CON_NAME" \
   802-11-wireless.mode ap \
-  802-11-wireless.band "${BAND:-bg}" \
+  802-11-wireless.band "$BAND" \
   ipv4.method shared \
   ipv6.method ignore \
   wifi-sec.key-mgmt wpa-psk \
   wifi-sec.psk "$PSK" \
   802-11-wireless.hidden yes
 
-# Kanal nur setzen, wenn befüllt
-if [[ -n "${CHANNEL:-}" ]]; then
-  nmcli connection modify "$CON_NAME" 802-11-wireless.channel "$CHANNEL"
-fi
-
-# feste AP-IP (NetworkManager nutzt bei shared sonst 10.42.0.1 – wir setzen explizit)
+[[ -n "$CHANNEL" ]] && nmcli connection modify "$CON_NAME" 802-11-wireless.channel "$CHANNEL"
+nmcli connection modify "$CON_NAME" connection.interface-name "$WLAN_IF"
 nmcli connection modify "$CON_NAME" ipv4.addresses "${GATEWAY_IP}/24"
 
-echo "==> NetworkManager aktivieren & Hotspot starten ..."
-systemctl enable NetworkManager.service
-nmcli connection up "$CON_NAME"
+echo "==> Hotspot starten (explizit auf $WLAN_IF)"
+nmcli connection up "$CON_NAME" ifname "$WLAN_IF"
 
 echo "==> Fertig."
-echo "    SSID (hidden): $SSID"
-echo "    PSK          : $PSK"
-echo "    AP-IP        : $GATEWAY_IP/24"
-echo "Hinweis: Versteckte SSIDs erhöhen die Sicherheit nicht wesentlich, verhindern aber, dass Unbeteiligte sie versehentlich auswählen."
+echo "SSID (hidden): $SSID"
+echo "PSK         : $PSK"
+echo "AP-IP       : $GATEWAY_IP/24"
