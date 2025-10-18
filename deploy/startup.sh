@@ -18,9 +18,9 @@ if ping -c 1 -W 1 github.com >/dev/null 2>&1; then
   cd ..
   npm install
   rm -rd /home/admin/backup/*
-  /home/admin/backup backup
+  /home/admin/backup.sh backup
   npm run build
-  /home/admin/backup restore
+  /home/admin/backup.sh restore
   git pull >> /home/admin/startup.log 2>&1
 else
   echo "Kein Internet – überspringe git pull" >> /home/admin/startup.log
