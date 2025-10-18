@@ -33,6 +33,6 @@ elif [ "$MODE" = "restore" ]; then
 
 else
   echo "Ungültiger Modus. Bitte verwende:"
-  echo "   ./save.sh backup <benutzername>"
-  echo "   ./save.sh restore <benutzername>"
+  echo "   ./backup.sh backup"
+  echo "   ./backup.sh restore"
 fi
