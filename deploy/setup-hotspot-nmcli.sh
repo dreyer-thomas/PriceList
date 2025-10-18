@@ -72,7 +72,8 @@ nmcli connection modify "$CON_NAME" \
   wifi-sec.proto rsn \
   wifi-sec.pairwise ccmp \
   wifi-sec.group ccmp \
-  802-11-wireless-security.pmf 0
+  802-11-wireless-security.pmf 0 \
+  wifi-sec.psk "$PSK"
 
 # Kanal setzen (leer = Auto; sonst Zahl)
 if [[ -n "$CHANNEL" ]]; then
