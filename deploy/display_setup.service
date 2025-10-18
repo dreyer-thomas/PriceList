@@ -5,7 +5,7 @@ After=graphical.target
 [Service]
 User=admin
 Environment=DISPLAY=:0
-ExecStart=/usr/local/bin/set-display.sh
+ExecStart=/home/admin/set-display.sh
 Restart=on-failure
 
 [Install]
