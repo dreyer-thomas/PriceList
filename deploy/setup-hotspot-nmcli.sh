@@ -49,7 +49,6 @@ nmcli -t -f NAME connection show | grep -qx "$CON_NAME" && nmcli connection dele
 
 echo "==> Lege Hotspot-Verbindung neu an ..."
 nmcli dev set "$WLAN_IF" managed yes || true
-nmcli connection modify "$CON_NAME" connection.interface-name "$WLAN_IF"
 nmcli connection add type wifi ifname "$WLAN_IF" con-name "$CON_NAME" autoconnect yes ssid "$SSID"
 
 # Verbindung an das exakte Interface binden:
