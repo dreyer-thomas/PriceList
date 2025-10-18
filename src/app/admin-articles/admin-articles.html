@@ -100,7 +100,8 @@
                 </div>
             </div>
 
-            <div *ngIf="group.type === 'becher'" class="field w-full md:w-5">
+            <div *ngIf="group.type === 'becher' && group.articles?.length" class="field w-full md:w-5">
+                
                 <div class="grid w-full align-items-center">
 
                 <!-- Preis -->
