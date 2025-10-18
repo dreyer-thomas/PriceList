@@ -1,9 +1,28 @@
 #!/bin/bash
+set -euo pipefail
+
+# Defaults (können per Environment überschrieben werden)
+: "${DISPLAY:=:0}"
+: "${OUTPUT:=HDMI-1}"
+: "${MODE:=1920x1080}"
+: "${ROTATE:=}"   # leer = keine Rotation setzen
+
+export DISPLAY
+
 sleep 31
 
-# Warten, bis HDMI-1 wirklich verfügbar ist
-while ! xrandr | grep -q "HDMI-1 connected"; do
+# Warten, bis der Ausgang wirklich verfügbar ist
+until xrandr | grep -q "$OUTPUT connected"; do
   sleep 1
 done
 
-xrandr --output HDMI-1 --mode 1920x1080 --rotate left
+# Basiskonfiguration
+cmd=(xrandr --output "$OUTPUT" --mode "$MODE")
+
+# Rotation NUR anhängen, wenn ROTATE gesetzt ist (left|right|inverted|normal)
+if [[ -n "${ROTATE}" ]]; then
+  cmd+=(--rotate "$ROTATE")
+fi
+
+# Anwenden
+"${cmd[@]}"
