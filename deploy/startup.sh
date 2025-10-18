@@ -13,6 +13,8 @@ if ping -c 1 -W 1 github.com >/dev/null 2>&1; then
   chmod +x /home/admin/backup.sh
   cp /home/admin/PriceList/deploy/startup.sh /home/admin/startup.sh
   chmod +x /home/admin/startup.sh
+  cp /home/admin/PriceList/deploy/set_display.sh /home/admin/set_display.sh
+  chmod +x /home/admin/set_display.sh
   cd server
   npm install
   cd ..

@@ -1,0 +1,12 @@
+[Unit]
+Description=Preisliste Autostart
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+ExecStart=/home/admin/startup.sh
+User=admin
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
