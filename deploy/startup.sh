@@ -15,6 +15,8 @@ if ping -c 1 -W 1 github.com >/dev/null 2>&1; then
   chmod +x /home/admin/startup.sh
   cp /home/admin/PriceList/deploy/set_display.sh /home/admin/set-display.sh
   chmod +x /home/admin/set-display.sh
+  cp /home/admin/PriceList/deploy/setup-hotspot-nmcli.sh /home/admin/setup-hotspot-nmcli.sh
+  chmod +x /home/admin/setup-hotspot-nmcli.sh
   cd server
   npm install
   cd ..
