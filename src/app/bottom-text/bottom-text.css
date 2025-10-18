@@ -1,0 +1,23 @@
+
+.text-container {
+  font-size: 1.3rem;
+  font-weight: normal;
+}
+
+::ng-deep .text-container em {
+    margin: 0;
+}
+
+::ng-deep .text-container p {
+    margin: 0;
+}
+
+::ng-deep .text-container h1 {
+    margin: 0;
+}
+
+::ng-deep .text-container h2 {
+    margin: 0;
+}
+
+

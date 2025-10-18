@@ -7,6 +7,9 @@
   <ul class="article-list">
     <li *ngFor="let article of visibleArticles">
       <span>{{ article.name }}</span>
+      <div class="article-description" *ngIf="!hideDescriptions && article.description">
+        {{ article.description }}
+      </div>
     </li>
   </ul>
 </div>

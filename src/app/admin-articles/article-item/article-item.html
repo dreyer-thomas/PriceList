@@ -1,6 +1,6 @@
 <div class="grid w-full align-items-center">
   <!-- Sorte -->
-  <div class="col-7">
+  <div class="col-5">
     <input
       type="text"
       pInputText
@@ -10,15 +10,25 @@
       class="w-full" />
   </div>
 
+  <div class="col-5">
+    <input  
+      type="text"
+      pInputText
+      [(ngModel)]="article.description"
+      [name]="'desc-' + groupIndex + '-' + articleIndex"
+      placeholder="Beschreibung"
+      class="w-full" />
+  </div>
+
   <!-- Aktiv-Switch -->
-  <div class="col-2 flex align-items-center">
+  <div class="col-1 flex align-items-center">
     <p-toggle-switch
       [(ngModel)]="article.active"
       [name]="'active-' + groupIndex + '-' + articleIndex" />
   </div>
 
   <!-- Löschen -->
-  <div class="col-2 flex align-items-center justify-content-end">
+  <div class="col-1 flex align-items-center justify-content-end">
     <button
       pButton
       icon="pi pi-trash"

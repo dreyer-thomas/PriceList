@@ -3,12 +3,13 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppData } from '../pricegroup.model';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { EditorModule } from 'primeng/editor';
 
 @Component({
   selector: 'app-admin-general',
   templateUrl: './admin-general.html',
   styleUrls: ['./admin-general.css'],
-  imports: [CommonModule, FormsModule, ToggleSwitchModule]
+  imports: [CommonModule, FormsModule, ToggleSwitchModule, EditorModule]
 })
 export class AdminGeneralComponent {
   @Input() images: any[] = [];

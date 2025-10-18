@@ -15,6 +15,7 @@ export class PriceGroupComponent {
   @Input() price: number = 0;
   @Input() active: boolean = true;
   @Input() hidePrices: boolean = false;
+  @Input() hideDescriptions: boolean = false;
 
   readonly titleColorClass: string = 'color-red';
 
