@@ -1,0 +1,6 @@
+DISPLAY=:0
+XAUTHORITY=/home/admin/.Xauthority
+OUTPUT=HDMI-1
+MODE=1920x1080
+# leer = keine Drehung; oder: left|right|inverted|normal
+ROTATE=
