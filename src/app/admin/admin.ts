@@ -124,7 +124,7 @@ export class AdminComponent {
       this.appData.hidePrices,
       this.appData.hideDescription,
       this.appData.footerText,
-      (this.appData as any).twoColumnCupsLandscape ?? false
+      (this.appData as any).landscapeMode ?? false
     );
   }
 
