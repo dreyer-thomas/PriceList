@@ -112,7 +112,7 @@ export class AdminComponent {
         this.appData.hideDescription,
         this.appData.footerText,
         // falls du twoColumnCupsLandscape ergänzt hast:
-        (this.appData as any).twoColumnCupsLandscape ?? false
+        this.appData.landscapeMode ?? false
       );
   }
 
@@ -124,7 +124,7 @@ export class AdminComponent {
       this.appData.hidePrices,
       this.appData.hideDescription,
       this.appData.footerText,
-      (this.appData as any).landscapeMode ?? false
+      this.appData.landscapeMode ?? false
     );
   }
 
