@@ -15,17 +15,20 @@ const PORT = 3000;
 
 
 // JSON-Dateipfad
-const DATA_FILE = path.join(process.cwd(), '/server/public/browser/data/price-groups.json');
-const imageDir = path.join(process.cwd(), '/server/public/browser/images');
-const dataDir = path.join(process.cwd(), '/server/public/browser/data');
+const DATA_FILE = path.resolve(__dirname, 'public', 'browser', 'data', 'price-groups.json');
+const imageDir = path.resolve(__dirname, 'public', 'browser', 'images');
+const dataDir = path.resolve(__dirname, 'public', 'browser', 'data');
 
-//ensure the upload dir exists
-if (!existsSync(imageDir)) {
-  mkdirSync(imageDir, { recursive: true });
-}
-
-if (!existsSync(dataDir)) {
-  mkdirSync(dataDir, { recursive: true });
+// Ensure upload/data directories exist (robustly, no absolute root paths)
+try {
+  if (!existsSync(imageDir)) {
+    mkdirSync(imageDir, { recursive: true });
+  }
+  if (!existsSync(dataDir)) {
+    mkdirSync(dataDir, { recursive: true });
+  }
+} catch (err) {
+  console.error('❌ Konnte Verzeichnisse nicht anlegen:', err);
 }
 
 // Multer-Konfiguration
@@ -46,9 +49,17 @@ const upload = multer({ storage: storage });
 app.use(cors());
 app.use(express.json());
 
-const publicPath = path.join(process.cwd(), '/server/public/browser');
+const publicPath = path.resolve(__dirname, 'public', 'browser');
 console.log(`✅ Public path: ${publicPath}`);
 app.use(express.static(publicPath));
+
+// Global error handlers for better diagnostics
+process.on('uncaughtException', (err) => {
+  console.error('❌ Uncaught Exception:', err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('❌ Unhandled Rejection:', reason);
+});
 
 
 // JSON-Datei lesen
@@ -115,6 +126,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
   }
 });
+
+// Simple health endpoint
+app.get('/health', (_req, res) => res.json({ ok: true }));
 
 
 // Server starten
