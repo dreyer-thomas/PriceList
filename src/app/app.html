@@ -2,36 +2,58 @@
 <main class="main-content">
   <div class="content-wrapper">
 
-    <div class="column-layout">
-      <div class="column">
-        <ng-container *ngFor="let group of leftColumnGroups; let i = index; trackBy: trackByTitle">
-          <app-price-group
-            [title]="group.title"
-            [articles]="group.articles"
-            [type]="group.type"
-            [price]="group.price"
-            [active]="group.active"
-            [hidePrices]="appData.hidePrices"
-            [hideDescriptions]="appData.hideDescription">
-          </app-price-group>
-        </ng-container>
-      </div>
-      <div class="column">
-        <ng-container *ngFor="let group of rightColumnGroups; let i = index; trackBy: trackByTitle">
-          <app-price-group
-            [title]="group.title"
-            [articles]="group.articles"
-            [type]="group.type"
-            [price]="group.price"
-            [active]="group.active"
-            [hidePrices]="appData.hidePrices"
-            [hideDescriptions]="appData.hideDescription">
-          </app-price-group>
-        </ng-container>
-      </div>
+  <!-- KUGEL: ein Template, 2 oder 3 Spalten je nach landscapeMode -->
+  <div class="kugel-grid"
+      [class.two-cols]="!appData.landscapeMode"
+      [class.three-cols]="appData.landscapeMode">
+
+    <!-- Links -->
+    <div class="column">
+      <ng-container *ngFor="let group of leftColumnGroups; trackBy: trackByTitle">
+        <app-price-group
+          [title]="group.title"
+          [articles]="group.articles"
+          [type]="group.type"
+          [price]="group.price"
+          [active]="group.active"
+          [hidePrices]="appData.hidePrices"
+          [hideDescriptions]="appData.hideDescription">
+        </app-price-group>
+      </ng-container>
     </div>
 
-    <div class="becher-block">
+    <!-- Mitte nur im Landscape-Mode -->
+    <div class="column" *ngIf="appData.landscapeMode">
+      <ng-container *ngFor="let group of middleColumnGroups; trackBy: trackByTitle">
+        <app-price-group
+          [title]="group.title"
+          [articles]="group.articles"
+          [type]="group.type"
+          [price]="group.price"
+          [active]="group.active"
+          [hidePrices]="appData.hidePrices"
+          [hideDescriptions]="appData.hideDescription">
+        </app-price-group>
+      </ng-container>
+    </div>
+
+    <!-- Rechts -->
+    <div class="column">
+      <ng-container *ngFor="let group of rightColumnGroups; trackBy: trackByTitle">
+        <app-price-group
+          [title]="group.title"
+          [articles]="group.articles"
+          [type]="group.type"
+          [price]="group.price"
+          [active]="group.active"
+          [hidePrices]="appData.hidePrices"
+          [hideDescriptions]="appData.hideDescription">
+        </app-price-group>
+      </ng-container>
+    </div>
+  </div>
+
+    <div class="becher-block" *ngIf="!appData.landscapeMode">
       <ng-container *ngFor="let group of becherGroups; trackBy: trackByTitle">
         <app-price-group
           [title]="group.title"
@@ -42,6 +64,35 @@
           [hidePrices]="appData.hidePrices">
         </app-price-group>
       </ng-container>
+    </div>
+
+    <div class="becher-grid two-cols" *ngIf="appData.landscapeMode">
+      <div class="column">
+        <ng-container *ngFor="let group of becherLeft; trackBy: trackByTitle">
+          <app-price-group
+            [title]="group.title"
+            [articles]="group.articles"
+            [type]="group.type"
+            [price]="group.price"
+            [active]="group.active"
+            [hidePrices]="appData.hidePrices"
+            [hideDescriptions]="appData.hideDescription">
+          </app-price-group>
+        </ng-container>
+      </div>
+      <div class="column">
+        <ng-container *ngFor="let group of becherRight; trackBy: trackByTitle">
+          <app-price-group
+            [title]="group.title"
+            [articles]="group.articles"
+            [type]="group.type"
+            [price]="group.price"
+            [active]="group.active"
+            [hidePrices]="appData.hidePrices"
+            [hideDescriptions]="appData.hideDescription">
+          </app-price-group>
+        </ng-container>
+      </div>
     </div>
 
     <div>

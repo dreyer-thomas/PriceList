@@ -11,7 +11,10 @@
   <p-tabpanels>
         <!-- Tab: Allgemein -->
         <p-tabpanel value="0">
-            <app-admin-general [images]="images" [appData]="appData"></app-admin-general>
+            <app-admin-general 
+              [images]="images" 
+              [(appData)]="appData">
+          </app-admin-general>
         </p-tabpanel>
 
         <!-- Tab: Artikel -->

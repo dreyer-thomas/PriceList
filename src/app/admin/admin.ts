@@ -95,11 +95,37 @@ export class AdminComponent {
   }
 
   addGroup() {
-    this.appData.groups.push(new PriceGroup());
+    const g = new PriceGroup();
+      g.title = '';
+      g.active = true;
+      g.type = 'kugel';
+      g.price = 0;
+      g.articles = [];
+      g.column = 'left';
+
+      const newGroups = [...this.appData.groups, g];
+
+      // AppData als neue Referenz erzeugen (wichtig für OnPush-Child)
+      this.appData = new AppData(
+        newGroups,
+        this.appData.hidePrices,
+        this.appData.hideDescription,
+        this.appData.footerText,
+        // falls du twoColumnCupsLandscape ergänzt hast:
+        (this.appData as any).twoColumnCupsLandscape ?? false
+      );
   }
 
   deleteGroup(index: number) {
-    this.appData.groups.splice(index, 1);
+    const newGroups = this.appData.groups.filter((_, i) => i !== index);
+
+    this.appData = new AppData(
+      newGroups,
+      this.appData.hidePrices,
+      this.appData.hideDescription,
+      this.appData.footerText,
+      (this.appData as any).twoColumnCupsLandscape ?? false
+    );
   }
 
 

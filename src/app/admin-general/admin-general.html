@@ -8,6 +8,17 @@
         <p-toggle-switch [(ngModel)]="appData.hideDescription"></p-toggle-switch>
         <label for="hideDescription" class="w-1/2">Beschreibung ausblenden</label>
     </div>
+    <!-- 2-column format for cups as option -->
+    <div class="flex justify-between items-center w-full mb-2 gap-3">
+        <p-toggle-switch 
+            [(ngModel)]="appData.landscapeMode" 
+            (ngModelChange)="onTwoColsToggle($event)"
+            inputId="twoColumnCupsLandscape">
+        </p-toggle-switch>
+        <label for="twoColumnCupsLandscape" class="w-1/2">
+        Querformat optimieren
+        </label>
+    </div>
       <!-- Mehrzeiliger Editor für Footer Text -->
     <div class="mb-2">
         <label for="footerText" class="block mb-1 font-semibold">Footer Text</label>

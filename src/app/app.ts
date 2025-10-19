@@ -38,6 +38,7 @@ export class App implements OnInit {
             this.appData.hideDescription = data.hideDescription;
             this.appData.footerText = data.footerText;
             this.appData.groups = data.groups.filter(group => group.active !== false);
+            this.appData.landscapeMode = data.landscapeMode ?? false;
           });
       }
 
@@ -62,6 +63,7 @@ export class App implements OnInit {
               this.appData = data;
               this.appData.footerText = data.footerText;
               this.appData.groups = data.groups.filter(g => g.active !== false);
+              (this.appData as any).twoColumnCupsLandscape = (data as any).twoColumnCupsLandscape ?? false;
             }
         });
       }
@@ -76,12 +78,26 @@ export class App implements OnInit {
         );
       }
 
+      get becherLeft(): PriceGroup[] {
+        return this.becherGroups.filter(g => g.column === 'left');
+      }
+
+      get becherRight(): PriceGroup[] {
+        return this.becherGroups.filter(g => g.column === 'right');
+      }
+
       get leftColumnGroups(): PriceGroup[] {
         return this.kugelGroups.filter(g => g.column === 'left');
       }
 
       get rightColumnGroups(): PriceGroup[] {
         return this.kugelGroups.filter(g => g.column === 'right');
+      }
+
+      get middleColumnGroups(): PriceGroup[] {
+        return this.appData.landscapeMode
+          ? this.kugelGroups.filter(g => g.column === 'middle')
+          : [];
       }
 
       trackByTitle(index: number, group: PriceGroup): string {

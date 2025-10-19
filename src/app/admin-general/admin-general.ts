@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AppData } from '../pricegroup.model';
@@ -14,4 +14,14 @@ import { EditorModule } from 'primeng/editor';
 export class AdminGeneralComponent {
   @Input() images: any[] = [];
   @Input() appData: AppData = {} as AppData;
+
+  //Inform parents on changes
+  @Output() appDataChange = new EventEmitter<AppData>();
+
+  onTwoColsToggle(value: boolean) {
+    // neue Referenz erzeugen (wichtig für OnPush-Siblings)
+    const updated: AppData = { ...this.appData, landscapeMode: value };
+    this.appData = updated;
+    this.appDataChange.emit(updated);
+  }
 }

@@ -4,7 +4,7 @@ export class PriceGroup {
   type: 'kugel' | 'becher' = 'kugel'; // NEU
   price: number = 0; // Nur für Typ 'kugel'
   articles: Article[] = [];
-  column: 'left' | 'right' = 'left';
+  column: 'left' | 'right' | 'middle' = 'left';
 }
 
 export class Article {
@@ -21,7 +21,8 @@ export class AppData {
     public groups: PriceGroup[] = [],
     public hidePrices: boolean = false,
     public hideDescription: boolean = false,
-    public footerText: string = ""
+    public footerText: string = "",
+    public landscapeMode: boolean = false
   ) {}
 }
 

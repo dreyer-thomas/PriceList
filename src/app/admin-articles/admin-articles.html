@@ -53,12 +53,19 @@
                         size="small"
                         class="py-1 leading-none w-full"
                         [(ngModel)]="group.column"
-                        [options]="[{ label: 'Links', value: 'left' }, { label: 'Rechts', value: 'right' }]"
+                        [options]="[
+                            { label: 'Links', value: 'left' },
+                            { label: 'Mitte', value: 'middle' , disabled: !appData.landscapeMode},
+                            { label: 'Rechts', value: 'right' }
+                        ]"  
                         optionLabel="label"
                         optionValue="value"
                         inputId="column"
                         placeholder="Spalte wählen">
                         </p-select>
+                        <small *ngIf="!appData.landscapeMode" class="text-600 block mt-1">
+                            „Mitte“ ist nur im Landscape-Modus verfügbar.
+                        </small>
                     </div>
                 </div>
             </div>
@@ -101,7 +108,7 @@
             </div>
 
             <div *ngIf="group.type === 'becher' && group.articles?.length" class="field w-full md:w-5">
-                
+
                 <div class="grid w-full align-items-center">
 
                 <!-- Preis -->
@@ -158,6 +165,28 @@
                             class="w-full">
                     </textarea>
                 </div>
+
+                <!-- Select column if two-solum-cups is enabled -->
+                <div class="col-3">
+                <label for="becher-column-{{ i }}">Spalte:</label>
+                </div>
+                <div class="col-9">
+                <p-select
+                    size="small"
+                    class="py-1 leading-none w-full"
+                    [(ngModel)]="group.column"
+                    [options]="[{ label: 'Links', value: 'left' }, { label: 'Rechts', value: 'right' }]"
+                    optionLabel="label"
+                    optionValue="value"
+                    inputId="becher-column-{{ i }}"
+                    placeholder="Spalte wählen"
+                    [disabled]="!appData.landscapeMode">
+                </p-select>
+                <small *ngIf="!appData.landscapeMode" class="text-600 block mt-1">
+                    Aktiviert sich, wenn Landscape-Modus eingeschaltet ist.
+                </small>
+                </div>
+
 
                 </div>
             </div>

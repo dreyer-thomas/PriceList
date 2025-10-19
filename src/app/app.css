@@ -43,3 +43,49 @@ main, app-root, .content-wrapper {
   gap: 3rem;
   margin-top: 4rem;
 }
+
+.becher-grid.two-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* zwei Spalten */
+  gap: 2rem;                      /* Abstand zwischen Spalten */
+  margin-top: 4rem;               /* wie .becher-block */
+}
+
+/* Spalten-Stacks innerhalb des Grids */
+.becher-grid.two-cols .column {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;                      /* Abstand zwischen Gruppen, analog .becher-block */
+}
+
+/* (Optional) optische Trennung zwischen den Spalten */
+.becher-grid.two-cols .column:first-child {
+  padding-right: 1rem;
+  border-right: 2px solid rgba(255, 255, 255, 0.15);
+}
+
+/* (Optional) Fallback auf 1 Spalte bei sehr schmalen Screens */
+@media (max-width: 800px) {
+  .becher-grid.two-cols {
+    grid-template-columns: 1fr;
+  }
+  .becher-grid.two-cols .column:first-child {
+    border-right: 0;
+    padding-right: 0;
+  }
+}
+
+/* Kugeleis: 2 oder 3 Spalten per Klasse */
+.kugel-grid {
+  display: grid;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+.kugel-grid.two-cols   { grid-template-columns: 1fr 1fr; }
+.kugel-grid.three-cols { grid-template-columns: 1fr 1fr 1fr; }
+
+.kugel-grid .column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
