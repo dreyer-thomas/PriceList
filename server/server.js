@@ -132,6 +132,6 @@ app.get('/health', (_req, res) => res.json({ ok: true }));
 
 
 // Server starten
-app.listen(PORT, () => {
-  console.log(`✅ Backend läuft unter http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`✅ Backend läuft unter http://0.0.0.0:${PORT}`);
 });
